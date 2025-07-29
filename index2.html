@@ -231,6 +231,10 @@
     width: 24px;
     height: 24px;
     object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+  .currency-item:hover .currency-icon img {
+    transform: scale(1.1);
   }
   .currency-details {
     flex: 1;
@@ -351,16 +355,18 @@
     "Guaraní paraguayo": { code: "PYG", icon: "https://currencyfreaks.com/photos/flags/pyg.png" },
     "Peso mexicano": { code: "MXN", icon: "https://currencyfreaks.com/photos/flags/mxn.png" }
   };
-const cryptoCurrencies = [
-  { name: 'Tether (USDT)', code: 'USDT', icon: 'https://paralelo.scz.red/paralelo/1.png' },
-  { name: 'Bitcoin', code: 'BTC', icon: 'https://paralelo.scz.red/paralelo/2.png' },
-  { name: 'Ethereum', code: 'ETH', icon: 'https://paralelo.scz.red/paralelo/3.png' },
-  { name: 'USD Coin', code: 'USDC', icon: 'https://paralelo.scz.red/paralelo/4.png' },
-  { name: 'Dogecoin', code: 'DOGE', icon: 'https://paralelo.scz.red/paralelo/5.png' },
-  { name: 'Solana', code: 'SOL', icon: 'https://paralelo.scz.red/paralelo/6.png' },
-  { name: 'Pepe', code: 'PEPE', icon: 'https://paralelo.scz.red/paralelo/7.png' },
-  { name: 'Trump', code: 'TRUMP', icon: 'https://paralelo.scz.red/paralelo/8.png' }
-];
+
+  const cryptoCurrencies = [
+    { name: 'Tether (USDT)', code: 'USDT', icon: 'https://paralelo.scz.red/paralelo/1.png' },
+    { name: 'Bitcoin', code: 'BTC', icon: 'https://paralelo.scz.red/paralelo/2.png' },
+    { name: 'Ethereum', code: 'ETH', icon: 'https://paralelo.scz.red/paralelo/3.png' },
+    { name: 'USD Coin', code: 'USDC', icon: 'https://paralelo.scz.red/paralelo/4.png' },
+    { name: 'Dogecoin', code: 'DOGE', icon: 'https://paralelo.scz.red/paralelo/5.png' },
+    { name: 'Solana', code: 'SOL', icon: 'https://paralelo.scz.red/paralelo/6.png' },
+    { name: 'Pepe', code: 'PEPE', icon: 'https://paralelo.scz.red/paralelo/7.png' },
+    { name: 'Trump', code: 'TRUMP', icon: 'https://paralelo.scz.red/paralelo/8.png' }
+  ];
+
   const montoInput = document.getElementById('monto');
   const fiatList = document.getElementById('fiat-list');
   const cryptoList = document.getElementById('crypto-list');
@@ -377,6 +383,7 @@ const cryptoCurrencies = [
     fiatList.innerHTML = '';
     cryptoList.innerHTML = '';
   }
+
   function showGlobalLoader(show=true) {
     loaderGlobal.style.display = show ? 'block' : 'none';
     if (show) {
@@ -384,45 +391,111 @@ const cryptoCurrencies = [
       cryptoList.innerHTML = '';
     }
   }
-  function renderCurrencyList(listElement, data, currencyData) {
+
+  function renderCurrencyList(listElement, data, currencyData, isCrypto = false) {
     listElement.innerHTML = '';
-    for (const [name, value] of Object.entries(data)) {
-      const currencyInfo = currencyData[name] || {
-        code: '', icon: 'paralelo/2.png'
-      };
-      const li = document.createElement('li');
-      li.className = 'currency-item';
-      li.setAttribute('role', 'listitem');
-      const icon = document.createElement('div');
-      icon.className = 'currency-icon';
-      const iconImg = document.createElement('img');
-      iconImg.src = currencyInfo.icon;
-      iconImg.alt = name;
-      iconImg.loading = "lazy";
-      icon.appendChild(iconImg);
-      const details = document.createElement('div');
-      details.className = 'currency-details';
-      const nameElement = document.createElement('div');
-      nameElement.className = 'currency-name';
-      nameElement.textContent = name;
-      const codeElement = document.createElement('div');
-      codeElement.className = 'currency-code';
-      codeElement.textContent = currencyInfo.code;
-      details.appendChild(nameElement);
-      details.appendChild(codeElement);
-      const valueContainer = document.createElement('div');
-      const valueElement = document.createElement('div');
-      valueElement.className = 'currency-value';
-      valueElement.textContent = typeof value === "number" ?
-        value.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) :
-        value;
-      valueContainer.appendChild(valueElement);
-      li.appendChild(icon);
-      li.appendChild(details);
-      li.appendChild(valueContainer);
-      listElement.appendChild(li);
+    
+    if (isCrypto) {
+      // Renderizado para criptomonedas
+      cryptoCurrencies.forEach(crypto => {
+        const value = data[crypto.name] || data[crypto.code] || 0;
+        
+        const li = document.createElement('li');
+        li.className = 'currency-item';
+        li.setAttribute('role', 'listitem');
+        
+        const icon = document.createElement('div');
+        icon.className = 'currency-icon';
+        
+        const iconImg = new Image();
+        iconImg.src = crypto.icon;
+        iconImg.alt = crypto.name;
+        iconImg.loading = "lazy";
+        iconImg.onerror = function() {
+          this.src = `https://cryptologos.cc/logos/${crypto.code.toLowerCase()}-${crypto.code.toLowerCase()}-logo.png`;
+          this.onerror = null;
+        };
+        
+        icon.appendChild(iconImg);
+        
+        const details = document.createElement('div');
+        details.className = 'currency-details';
+        
+        const nameElement = document.createElement('div');
+        nameElement.className = 'currency-name';
+        nameElement.textContent = crypto.name;
+        
+        const codeElement = document.createElement('div');
+        codeElement.className = 'currency-code';
+        codeElement.textContent = crypto.code;
+        
+        details.appendChild(nameElement);
+        details.appendChild(codeElement);
+        
+        const valueElement = document.createElement('div');
+        valueElement.className = 'currency-value';
+        valueElement.textContent = typeof value === "number" ?
+          value.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) :
+          value;
+        
+        li.appendChild(icon);
+        li.appendChild(details);
+        li.appendChild(valueElement);
+        listElement.appendChild(li);
+      });
+    } else {
+      // Renderizado para monedas tradicionales
+      for (const [name, value] of Object.entries(data)) {
+        const currencyInfo = currencyData[name] || {
+          code: name.substring(0, 3),
+          icon: 'https://via.placeholder.com/40/4361ee/ffffff?text=' + name.substring(0, 2)
+        };
+
+        const li = document.createElement('li');
+        li.className = 'currency-item';
+        li.setAttribute('role', 'listitem');
+        
+        const icon = document.createElement('div');
+        icon.className = 'currency-icon';
+        
+        const iconImg = new Image();
+        iconImg.src = currencyInfo.icon;
+        iconImg.alt = name;
+        iconImg.loading = "lazy";
+        iconImg.onerror = function() {
+          this.src = 'https://via.placeholder.com/40/4361ee/ffffff?text=' + currencyInfo.code.substring(0, 2);
+        };
+        
+        icon.appendChild(iconImg);
+        
+        const details = document.createElement('div');
+        details.className = 'currency-details';
+        
+        const nameElement = document.createElement('div');
+        nameElement.className = 'currency-name';
+        nameElement.textContent = name;
+        
+        const codeElement = document.createElement('div');
+        codeElement.className = 'currency-code';
+        codeElement.textContent = currencyInfo.code;
+        
+        details.appendChild(nameElement);
+        details.appendChild(codeElement);
+        
+        const valueElement = document.createElement('div');
+        valueElement.className = 'currency-value';
+        valueElement.textContent = typeof value === "number" ?
+          value.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) :
+          value;
+        
+        li.appendChild(icon);
+        li.appendChild(details);
+        li.appendChild(valueElement);
+        listElement.appendChild(li);
+      }
     }
   }
+
   function validarMonto(monto) {
     if (!monto || isNaN(monto)) return false;
     const n = Number(monto);
@@ -431,11 +504,11 @@ const cryptoCurrencies = [
     if (monto.length > 10) return false;
     return true;
   }
+
   function isOffline() {
     return !navigator.onLine;
   }
 
-  // === TIPO DE CAMBIO USD/BOB y EUR/BOB robusto ===
   async function actualizarTasasUI(force=false) {
     if (!force && cacheTasas && Date.now() - lastTasaUpdate < CACHE_EXP) {
       tasaUSD.textContent = cacheTasas.usd;
@@ -492,8 +565,8 @@ const cryptoCurrencies = [
     if (!force && lastMonto === monto && cache[monto]) return;
     if (cache[monto] && Date.now() - cache[monto].timestamp < CACHE_EXP) {
       showGlobalLoader(false);
-      renderCurrencyList(fiatList, cache[monto].data.conversiones_fiat, fiatCurrencies);
-      renderCurrencyList(cryptoList, cache[monto].data.conversiones_cripto, cryptoCurrencies);
+      renderCurrencyList(fiatList, cache[monto].data.conversiones_fiat, fiatCurrencies, false);
+      renderCurrencyList(cryptoList, cache[monto].data.conversiones_cripto, cryptoCurrencies, true);
       actualizarTasasUI();
       lastMonto = monto;
       return;
@@ -515,8 +588,8 @@ const cryptoCurrencies = [
       if (data.error) throw new Error(data.error);
       cache[monto] = {data, timestamp: Date.now()};
       showGlobalLoader(false);
-      renderCurrencyList(fiatList, data.conversiones_fiat, fiatCurrencies);
-      renderCurrencyList(cryptoList, data.conversiones_cripto, cryptoCurrencies);
+      renderCurrencyList(fiatList, data.conversiones_fiat, fiatCurrencies, false);
+      renderCurrencyList(cryptoList, data.conversiones_cripto, cryptoCurrencies, true);
       actualizarTasasUI();
       lastMonto = monto;
     } catch (error) {
@@ -525,6 +598,15 @@ const cryptoCurrencies = [
       cryptoList.innerHTML = '';
     }
   }
+
+  // Precargar imágenes de criptomonedas
+  function preloadCryptoImages() {
+    cryptoCurrencies.forEach(crypto => {
+      const img = new Image();
+      img.src = crypto.icon;
+    });
+  }
+
   let timeout;
   montoInput.addEventListener('input', () => {
     clearTimeout(timeout);
@@ -532,15 +614,18 @@ const cryptoCurrencies = [
       calcular();
     }, 800);
   });
+
   montoInput.addEventListener('keypress', (e) => {
     const char = String.fromCharCode(e.which);
     if (!/[0-9.]/.test(char)) e.preventDefault();
     if (char === '.' && montoInput.value.includes('.')) e.preventDefault();
   });
+
   montoInput.addEventListener('paste', (e) => {
     const value = (e.clipboardData || window.clipboardData).getData('text');
     if (!/^\d+(\.\d{1,2})?$/.test(value)) e.preventDefault();
   });
+
   window.addEventListener('online', () => calcular(true));
   window.addEventListener('offline', () => {
     tasaUSD.textContent = "Sin conexión";
@@ -549,7 +634,9 @@ const cryptoCurrencies = [
     cryptoList.innerHTML = '';
     showGlobalLoader(false);
   });
+
   document.addEventListener('DOMContentLoaded', () => {
+    preloadCryptoImages();
     montoInput.focus();
     calcular(true);
     setInterval(() => actualizarTasasUI(), 60000);
