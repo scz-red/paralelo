@@ -1,11 +1,11 @@
 {
-  "name": "Calculadora Paralelo",
-  "short_name": "Paralelo",
+  "name": "Paralelo Bo",
+  "short_name": "Paralelo Bo",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#4361ee",
   "theme_color": "#3a0ca3",
-  "description": "Calculadora de cambio de monedas y criptomonedas",
+  "description": "Calculadora de cambio de Bolivianos a monedas y criptomonedas",
   "icons": [
     {
       "src": "icons/icon-72x72.png",
