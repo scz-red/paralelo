@@ -1,428 +1,195 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PARALELO</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <style>
-    :root {
-      --primary: #4361ee;
-      --primary-dark: #3a0ca3;
-      --background: #f8fafc;
-      --card: #ffffff;
-      --text: #1e293b;
-      --text-light: #64748b;
-      --border: rgba(0, 0, 0, 0.08);
-      --shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
-      --glass: rgba(255, 255, 255, 0.8);
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --background: #0f172a;
-        --card: #1e293b;
-        --text: #f8fafc;
-        --text-light: #94a3b8;
-        --border: rgba(255, 255, 255, 0.08);
-        --glass: rgba(30, 41, 59, 0.8);
-      }
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--background);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      line-height: 1.5;
-      transition: background 0.3s ease;
-    }
-    .app-container {
-      width: 100%;
-      max-width: 420px;
-      min-height: 100vh;
-      background: var(--card);
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-    .header {
-      padding: 24px 20px 80px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-    }
-    .header::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 40px;
-      background: var(--card);
-      border-radius: 24px 24px 0 0;
-      z-index: 2;
-    }
-    .header h1 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      position: relative;
-      z-index: 3;
-    }
-    .header p {
-      font-size: 0.9rem;
-      opacity: 0.9;
-      position: relative;
-      z-index: 3;
-    }
-    .input-container {
-      padding: 24px 20px;
-      margin-top: -60px;
-      position: relative;
-      z-index: 3;
-      background: var(--glass);
-      border-radius: 24px 24px 0 0;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid var(--border);
-      margin-bottom: 8px;
-      transition: all 0.3s ease;
-    }
-    .input-group {
-      position: relative;
-      margin-bottom: 20px;
-    }
-    .input-group label {
-      display: block;
-      font-size: 0.875rem;
-      font-weight: 500;
-      margin-bottom: 8px;
-      color: var(--text-light);
-    }
-    .input-group input {
-      width: 100%;
-      padding: 18px 20px;
-      font-size: 1.1rem;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--background);
-      font-weight: 500;
-      transition: all 0.3s ease;
-      box-shadow: var(--shadow);
-    }
-    .input-group input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-      transform: translateY(-2px);
-    }
-    .currency-selector {
-      position: absolute;
-      right: 12px;
-      bottom: 12px;
-      background: var(--primary);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      box-shadow: var(--shadow);
-    }
-    .tasas-referencia {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: 15px;
-    }
-    .tasa-item {
-      flex: 1;
-      background: var(--glass);
-      border-radius: 14px;
-      padding: 12px;
-      text-align: center;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-    }
-    .tasa-monedas {
-      font-size: 0.8rem;
-      color: var(--text-light);
-      margin-bottom: 5px;
-    }
-    .tasa-valor {
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--primary);
-    }
-    .results {
-      padding: 0 20px 20px;
-    }
-    .section-title {
-      font-size: 1rem;
-      font-weight: 600;
-      margin: 24px 0 16px;
-      color: var(--text-light);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .section-title i {
-      color: var(--primary);
-    }
-    .currency-list {
-      list-style: none;
-      background: var(--card);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .currency-item {
-      display: flex;
-      align-items: center;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      transition: all 0.3s ease;
-      animation: fadeIn 0.4s ease-out forwards;
-      opacity: 0;
-      background: var(--card);
-    }
-    .currency-item:last-child { border-bottom: none; }
-    .currency-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-    .currency-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: rgba(67, 97, 238, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 16px;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-    .currency-icon img {
-      width: 24px;
-      height: 24px;
-      object-fit: contain;
-    }
-    .currency-details { flex: 1; min-width: 0; }
-    .currency-name {
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin-bottom: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .currency-code {
-      font-size: 0.75rem;
-      color: var(--text-light);
-    }
-    .currency-value {
-      font-weight: 700;
-      text-align: right;
-      font-size: 1rem;
-    }
-    .currency-subvalue {
-      font-size: 0.75rem;
-      color: var(--text-light);
-      text-align: right;
-      margin-top: 4px;
-    }
-    .loading {
-      padding: 40px 20px;
-      text-align: center;
-      color: var(--text-light);
-      font-size: 0.9rem;
-    }
-    .loading i {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-      color: var(--primary);
-      display: block;
-    }
-    @media (max-width: 480px) {
-      .app-container {
-        min-height: 100vh;
-        max-width: 100%;
-        border-radius: 0;
-      }
-      .header {
-        padding: 24px 20px 80px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora al Paralelo</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap">
+    <style>
+        body { font-family: 'Montserrat', Arial, sans-serif; margin: 0; background: #f7f9fb; }
+        .container { max-width: 430px; margin: 40px auto; background: #fff; border-radius: 30px; box-shadow: 0 10px 32px 0 rgba(44,82,180,.16); overflow: hidden;}
+        .header { background: linear-gradient(135deg,#3b41e3 60%,#7f9cf5 100%); color: #fff; padding: 38px 30px 24px 30px;}
+        .header h1 { margin: 0 0 10px 0; font-size: 2rem; letter-spacing: 0.04em;}
+        .header p { font-size: 1.1rem; margin: 0; opacity: 0.92;}
+        .input-area { background: #f7f9fb; padding: 20px 30px 0 30px;}
+        .input-box { display: flex; margin-bottom: 18px;}
+        .input-box input { flex: 1; padding: 16px; font-size: 1.2rem; border: none; border-radius: 18px 0 0 18px; outline: none; background: #e5e8f5;}
+        .input-box button { padding: 0 32px; border: none; border-radius: 0 18px 18px 0; background: #3b41e3; color: #fff; font-size: 1.05rem; cursor: pointer; transition: background 0.2s;}
+        .input-box button:hover { background: #2327a3;}
+        .rate-area { display: flex; gap: 10px; justify-content: center; padding: 0 30px 15px 30px;}
+        .rate-box { flex: 1; background: #f1f2f6; border-radius: 18px; padding: 16px 0; text-align: center; margin-bottom: 4px; box-shadow: 0 2px 10px 0 rgba(44,82,180,.06);}
+        .rate-label { font-size: 0.99rem; color: #6979a7;}
+        .rate-value { font-weight: 700; font-size: 1.4rem; color: #363e6a; margin-top: 5px;}
+        .list-title { font-size: 1.09rem; font-weight: 600; color: #3b41e3; margin: 14px 0 7px 0; display: flex; align-items: center; gap: 8px;}
+        .list-title .emoji { font-size: 1.2em; }
+        .moneda-list, .crypto-list { margin: 0 20px 0 20px; padding: 0; list-style: none; }
+        .moneda-item, .crypto-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #ececec; font-size: 1.07rem;}
+        .moneda-item:last-child, .crypto-item:last-child { border-bottom: none; }
+        .moneda-flag, .crypto-flag { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; margin-right: 14px; background: #f2f3f8; box-shadow: 0 2px 8px 0 rgba(0,0,0,0.05);}
+        .crypto-list { margin-bottom: 24px;}
+        .crypto-label { font-weight: 500;}
+        .crypto-amount { margin-left: auto; font-weight: 700; color: #363e6a; font-size: 1.09rem;}
+        @media (max-width: 650px) { .container { margin: 0; max-width: 100vw; border-radius: 0; } }
+    </style>
 </head>
 <body>
-  <div class="app-container">
-    <div class="header">
-      <h1>Calculadora al Paralelo</h1>
-      <p>Convierte BOB a diferentes monedas al instante</p>
-    </div>
-    <div class="input-container">
-      <div class="input-group">
-        <label for="monto">Monto a convertir</label>
-        <input type="number" id="monto" min="1" value="1000" placeholder="Ej: 1000" autofocus />
-        <span class="currency-selector">BOB</span>
-      </div>
-      <div class="tasas-referencia">
-        <div class="tasa-item">
-          <div class="tasa-monedas">USD/BOB</div>
-          <div class="tasa-valor" id="tasa-usd">--</div>
+    <div class="container">
+        <div class="header">
+            <h1>Calculadora al Paralelo</h1>
+            <p>Convierte BOB a diferentes monedas al instante</p>
         </div>
-        <div class="tasa-item">
-          <div class="tasa-monedas">EUR/BOB</div>
-          <div class="tasa-valor" id="tasa-eur">--</div>
+        <div class="input-area">
+            <form id="calc-form" autocomplete="off">
+                <div class="input-box">
+                    <input type="number" id="monto" min="1" placeholder="Monto en BOB" required />
+                    <button type="submit">BOB</button>
+                </div>
+            </form>
+            <div class="rate-area">
+                <div class="rate-box">
+                    <div class="rate-label">USD/BOB</div>
+                    <div class="rate-value" id="usd-rate">-</div>
+                </div>
+                <div class="rate-box">
+                    <div class="rate-label">EUR/BOB</div>
+                    <div class="rate-value" id="eur-rate">-</div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="results" aria-live="polite" aria-atomic="true">
-      <div class="section-title">
-        <i class="fas fa-money-bill-wave"></i>
-        <span>Monedas tradicionales</span>
-      </div>
-      <ul class="currency-list" id="fiat-list"></ul>
-      <div class="section-title">
-        <i class="fas fa-coins"></i>
-        <span>Criptomonedas</span>
-      </div>
-      <ul class="currency-list" id="crypto-list"></ul>
-      <div id="loader-global" style="display:none;" role="status" aria-live="polite">
-        <div class="loading">
-          <i class="fas fa-spinner fa-spin"></i>
-          Calculando tasas de cambio...
+        <div style="padding-bottom: 16px;">
+            <div class="list-title"><span class="emoji">💱</span>Monedas tradicionales</div>
+            <ul class="moneda-list" id="fiat-list"></ul>
+            <div class="list-title"><span class="emoji">💾</span>Criptomonedas</div>
+            <ul class="crypto-list" id="crypto-list"></ul>
         </div>
-      </div>
     </div>
-  </div>
 <script>
+const API_URL = 'https://api.lupo.lat/convertir_bob';
+const CACHE_KEY = 'paralelo_cache';
+const CACHE_TIME = 2 * 60 * 1000; // 2 minutos en ms
+
 const fiatCurrencies = {
-  "Dólar estadounidense": { code: "USD", icon: "https://currencyfreaks.com/photos/flags/usd.png" },
-  "Euro": { code: "EUR", icon: "https://currencyfreaks.com/photos/flags/eur.png" },
-  "Peso colombiano": { code: "COP", icon: "https://currencyfreaks.com/photos/flags/cop.png" },
-  "Peso argentino": { code: "ARS", icon: "https://currencyfreaks.com/photos/flags/ars.png" },
-  "Peso chileno": { code: "CLP", icon: "https://currencyfreaks.com/photos/flags/clp.png" },
-  "Real brasileño": { code: "BRL", icon: "https://currencyfreaks.com/photos/flags/brl.png" },
-  "Sol peruano": { code: "PEN", icon: "https://currencyfreaks.com/photos/flags/pen.png" },
-  "Yuan chino": { code: "CNY", icon: "https://currencyfreaks.com/photos/flags/cny.png" },
-  "Guaraní paraguayo": { code: "PYG", icon: "https://currencyfreaks.com/photos/flags/pyg.png" },
-  "Peso mexicano": { code: "MXN", icon: "https://currencyfreaks.com/photos/flags/mxn.png" }
+    "Dólar estadounidense": { code: "USD", icon: "https://currencyfreaks.com/photos/flags/usd.png" },
+    "Euro": { code: "EUR", icon: "https://currencyfreaks.com/photos/flags/eur.png" },
+    "Peso colombiano": { code: "COP", icon: "https://currencyfreaks.com/photos/flags/cop.png" },
+    "Peso argentino": { code: "ARS", icon: "https://currencyfreaks.com/photos/flags/ars.png" },
+    "Peso chileno": { code: "CLP", icon: "https://currencyfreaks.com/photos/flags/clp.png" },
+    "Real brasileño": { code: "BRL", icon: "https://currencyfreaks.com/photos/flags/brl.png" },
+    "Sol peruano": { code: "PEN", icon: "https://currencyfreaks.com/photos/flags/pen.png" },
+    "Guaraní paraguayo": { code: "PYG", icon: "https://currencyfreaks.com/photos/flags/pyg.png" },
+    "Yuan chino": { code: "CNY", icon: "https://currencyfreaks.com/photos/flags/cny.png" },
+    "Peso mexicano": { code: "MXN", icon: "https://currencyfreaks.com/photos/flags/mxn.png" }
 };
+
+// Usa tus archivos subidos en /paralelo/
 const cryptoCurrencies = {
-  "Tether":   { code: "USDT", icon: "paralelo/1.png" },
-  "BTC":      { code: "BTC",  icon: "paralelo/2.png" },
-  "ETH":      { code: "ETH",  icon: "paralelo/3.png" },
-  "USDC":     { code: "USDC", icon: "paralelo/4.png" },
-  "DOGE":     { code: "DOGE", icon: "paralelo/5.png" },
-  "SOL":      { code: "SOL",  icon: "paralelo/6.png" },
-  "PEPE":     { code: "PEPE", icon: "paralelo/7.png" },
-  "TRUMP":    { code: "TRUMP",icon: "paralelo/8.png" }
+    "Tether (USDT)": { code: "USDT", icon: "paralelo/1.png" },
+    "BTC": { code: "BTC", icon: "paralelo/2.png" },
+    "ETH": { code: "ETH", icon: "paralelo/3.png" },
+    "USDC": { code: "USDC", icon: "paralelo/4.png" },
+    "DOGE": { code: "DOGE", icon: "paralelo/5.png" },
+    "SOL": { code: "SOL", icon: "paralelo/6.png" },
+    "PEPE": { code: "PEPE", icon: "paralelo/7.png" },
+    "TRUMP": { code: "TRUMP", icon: "paralelo/8.png" }
 };
+
 const montoInput = document.getElementById('monto');
 const fiatList = document.getElementById('fiat-list');
 const cryptoList = document.getElementById('crypto-list');
-const loaderGlobal = document.getElementById('loader-global');
-const tasaUSD = document.getElementById('tasa-usd');
-const tasaEUR = document.getElementById('tasa-eur');
-let cache = {};
-let lastTasaUpdate = 0;
-const CACHE_EXP = 2 * 60 * 1000; // 2 minutos
+const usdRate = document.getElementById('usd-rate');
+const eurRate = document.getElementById('eur-rate');
+const form = document.getElementById('calc-form');
 
-function clearResults() {
-  fiatList.innerHTML = '';
-  cryptoList.innerHTML = '';
+function setLoading() {
+    fiatList.innerHTML = `<li class='moneda-item'>Cargando...</li>`;
+    cryptoList.innerHTML = `<li class='crypto-item'>Cargando...</li>`;
 }
-function showGlobalLoader(show=true) {
-  loaderGlobal.style.display = show ? 'block' : 'none';
-  if (show) {
+
+function renderFiat(cambios) {
     fiatList.innerHTML = '';
+    Object.keys(fiatCurrencies).forEach(mon => {
+        let val = cambios[mon];
+        if (typeof val !== 'number') val = 0;
+        fiatList.innerHTML += `<li class='moneda-item'>
+            <img src='${fiatCurrencies[mon].icon}' class='moneda-flag'>
+            <div>
+                <div>${mon}</div>
+                <div style='font-size:12px;color:#888;'>${fiatCurrencies[mon].code}</div>
+            </div>
+            <div class='crypto-amount'>${val.toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+        </li>`;
+    });
+}
+
+function renderCripto(cambios) {
     cryptoList.innerHTML = '';
-  }
+    Object.keys(cryptoCurrencies).forEach(mon => {
+        let val = cambios[mon];
+        if (typeof val !== 'number') val = 0;
+        cryptoList.innerHTML += `<li class='crypto-item'>
+            <img src='${cryptoCurrencies[mon].icon}' class='crypto-flag'>
+            <span class='crypto-label'>${mon}</span>
+            <span class='crypto-amount'>${val.toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:8})}</span>
+        </li>`;
+    });
 }
-function renderCurrencyList(listElement, data, currencyData, isCrypto=false) {
-  listElement.innerHTML = '';
-  for (const [name, value] of Object.entries(data)) {
-    let key = name;
-    if (isCrypto && currencyData[name] === undefined && currencyData[name.toUpperCase()]) key = name.toUpperCase();
-    const currency = currencyData[key] || {};
-    const icon = currency.icon ? `<span class="currency-icon"><img src="${currency.icon}" alt="${currency.code}" loading="lazy" onerror="this.style.opacity=0.1"></span>` : '';
-    listElement.innerHTML += `
-      <li class="currency-item" style="opacity:1">
-        ${icon}
-        <div class="currency-details">
-          <div class="currency-name">${name}</div>
-          <div class="currency-code">${currency.code || ''}</div>
-        </div>
-        <div>
-          <div class="currency-value">${typeof value === 'number' ? value.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : value}</div>
-        </div>
-      </li>`;
-  }
+
+function renderRates(json) {
+    usdRate.textContent = (json.conversiones_fiat && json.conversiones_fiat['Dólar estadounidense']) ?
+        Number(json.conversiones_fiat['Dólar estadounidense']).toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2}) : '-';
+    eurRate.textContent = (json.conversiones_fiat && json.conversiones_fiat['Euro']) ?
+        Number(json.conversiones_fiat['Euro']).toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2}) : '-';
 }
-async function fetchTasas() {
-  // Evita recargar si el caché es válido
-  if (cache.tasas && Date.now() - lastTasaUpdate < CACHE_EXP) {
-    return cache.tasas;
-  }
-  showGlobalLoader(true);
-  try {
-    const res = await fetch('https://api.lupo.lat/cambio_bolivianos');
-    const data = await res.json();
-    cache.tasas = data.cotizaciones;
-    lastTasaUpdate = Date.now();
-    showGlobalLoader(false);
-    return data.cotizaciones;
-  } catch (e) {
-    showGlobalLoader(false);
-    alert('Error al obtener tasas. Reintenta más tarde.');
-    return {};
-  }
+
+function setCache(data, monto) {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({
+        data, monto, ts: Date.now()
+    }));
 }
-function calcularResultados(cotizaciones, monto) {
-  const fiat = {};
-  for (const [name, obj] of Object.entries(fiatCurrencies)) {
-    if (cotizaciones[obj.code] && !isNaN(cotizaciones[obj.code])) {
-      fiat[name] = (monto / cotizaciones[obj.code]);
+
+function getCache(monto) {
+    try {
+        const cache = JSON.parse(localStorage.getItem(CACHE_KEY));
+        if (!cache) return null;
+        if (cache.monto == monto && Date.now() - cache.ts < CACHE_TIME) {
+            return cache.data;
+        }
+        return null;
+    } catch { return null; }
+}
+
+async function fetchCambio(monto) {
+    setLoading();
+    let cache = getCache(monto);
+    if (cache) {
+        renderAll(cache);
+        return;
     }
-  }
-  const crypto = {};
-  for (const [name, obj] of Object.entries(cryptoCurrencies)) {
-    if (cotizaciones[obj.code] && !isNaN(cotizaciones[obj.code])) {
-      crypto[name] = (monto / cotizaciones[obj.code]);
-    }
-  }
-  return { fiat, crypto };
+    let url = `${API_URL}?monto_bob=${monto}`;
+    let res = await fetch(url);
+    let json = await res.json();
+    setCache(json, monto);
+    renderAll(json);
 }
-function updateUI(cotizaciones, monto) {
-  // Tasas principales
-  tasaUSD.textContent = cotizaciones.USD ? cotizaciones.USD.toLocaleString('es-ES', {minimumFractionDigits:2}) : '--';
-  tasaEUR.textContent = cotizaciones.EUR ? cotizaciones.EUR.toLocaleString('es-ES', {minimumFractionDigits:2}) : '--';
-  // Listas
-  const res = calcularResultados(cotizaciones, monto);
-  renderCurrencyList(fiatList, res.fiat, fiatCurrencies);
-  renderCurrencyList(cryptoList, res.crypto, cryptoCurrencies, true);
+
+function renderAll(json) {
+    renderRates(json);
+    renderFiat(json.conversiones_fiat || {});
+    renderCripto(json.conversiones_cripto || {});
 }
-async function main() {
-  showGlobalLoader(true);
-  const monto = parseFloat(montoInput.value) || 1;
-  const cotizaciones = await fetchTasas();
-  updateUI(cotizaciones, monto);
-}
-montoInput.addEventListener('input', () => main());
-window.addEventListener('DOMContentLoaded', main);
-setInterval(() => main(), CACHE_EXP);
+
+form.addEventListener('submit', e => {
+    e.preventDefault();
+    let monto = parseFloat(montoInput.value);
+    if (!monto || monto <= 0) return;
+    fetchCambio(monto);
+});
+
+// Inicializar con 1000
+window.onload = () => {
+    montoInput.value = 1000;
+    fetchCambio(1000);
+};
 </script>
 </body>
 </html>
