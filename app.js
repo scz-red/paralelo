@@ -1,65 +1,130 @@
-// app.js - Lógica principal de la aplicación
+/**
+ * APP.JS - Lógica principal de la aplicación
+ * Complementa script.js con funciones específicas de la UI
+ */
 
-class CurrencyCalculator {
-  constructor() {
-    this.fiatCurrencies = {
-      "Dólar estadounidense": { code: "USD", icon: "https://currencyfreaks.com/photos/flags/usd.png" },
-      "Euro": { code: "EUR", icon: "https://currencyfreaks.com/photos/flags/eur.png" },
-      // ... (resto de tus monedas fiat)
-    };
-
-    this.cryptoCurrencies = [
-      { name: 'Tether (USDT)', code: 'USDT', icon: 'https://paralelo.scz.red/paralelo/1.png' },
-      // ... (resto de tus criptomonedas)
-    ];
-
-    this.cache = {};
-    this.cacheTasas = null;
-    this.lastMonto = null;
-    this.lastTasaUpdate = 0;
-    this.CACHE_EXP = 60000;
-
-    this.initElements();
-    this.setupEventListeners();
+class AppUI {
+  constructor(calculator) {
+    this.calculator = calculator;
+    this.initUI();
+    this.setupUIEvents();
   }
 
-  initElements() {
-    this.montoInput = document.getElementById('monto');
-    this.fiatList = document.getElementById('fiat-list');
-    this.cryptoList = document.getElementById('crypto-list');
-    this.loaderGlobal = document.getElementById('loader-global');
-    this.tasaUSD = document.getElementById('tasa-usd');
-    this.tasaEUR = document.getElementById('tasa-eur');
+  /**
+   * Inicializa elementos de la interfaz
+   */
+  initUI() {
+    // Elementos de la UI
+    this.themeToggle = document.createElement('button');
+    this.themeToggle.className = 'theme-toggle';
+    this.themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    document.body.appendChild(this.themeToggle);
+
+    // Inicializar tema
+    this.initTheme();
   }
 
-  setupEventListeners() {
-    let timeout;
-    this.montoInput.addEventListener('input', () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        this.calcular();
-      }, 800);
+  /**
+   * Configura eventos de la UI
+   */
+  setupUIEvents() {
+    // Toggle de tema oscuro/claro
+    this.themeToggle.addEventListener('click', () => this.toggleTheme());
+
+    // Tooltips para iconos
+    this.setupTooltips();
+  }
+
+  /**
+   * Inicializa el tema basado en preferencias del sistema
+   */
+  initTheme() {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.classList.toggle('dark-theme', prefersDark);
+    this.updateThemeIcon(prefersDark);
+  }
+
+  /**
+   * Alterna entre temas claro/oscuro
+   */
+  toggleTheme() {
+    const isDark = document.documentElement.classList.toggle('dark-theme');
+    this.updateThemeIcon(isDark);
+    
+    // Guardar preferencia
+    localStorage.setItem('themePreference', isDark ? 'dark' : 'light');
+  }
+
+  /**
+   * Actualiza el icono del botón de tema
+   */
+  updateThemeIcon(isDark) {
+    this.themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+  }
+
+  /**
+   * Configura tooltips para elementos interactivos
+   */
+  setupTooltips() {
+    const tooltipElements = document.querySelectorAll('[data-tooltip]');
+    
+    tooltipElements.forEach(el => {
+      const tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+      tooltip.textContent = el.dataset.tooltip;
+      el.appendChild(tooltip);
+
+      el.addEventListener('mouseenter', () => {
+        tooltip.style.visibility = 'visible';
+        tooltip.style.opacity = '1';
+      });
+
+      el.addEventListener('mouseleave', () => {
+        tooltip.style.visibility = 'hidden';
+        tooltip.style.opacity = '0';
+      });
     });
-
-    // ... (otros event listeners)
   }
 
-  async calcular(force = false) {
-    // ... (implementación de tu función calcular)
-  }
+  /**
+   * Muestra notificación toast
+   */
+  showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
 
-  // ... (otros métodos de tu clase)
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 100);
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 500);
+    }, 3000);
+  }
 }
 
 // Inicialización cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
+  // Inicializar la calculadora (de script.js)
   const calculator = new CurrencyCalculator();
   
+  // Inicializar la interfaz de usuario
+  const appUI = new AppUI(calculator);
+
   // Precargar imágenes
-  const imagePreloader = new ImagePreloader();
-  imagePreloader.preloadCryptoImages(calculator.cryptoCurrencies);
+  const preloader = new ImagePreloader();
+  preloader.preloadCryptoImages(calculator.cryptoCurrencies);
   
-  // Inicializar PWA
+  // Configurar PWA
   const pwaHandler = new PWAHandler();
   pwaHandler.init();
+
+  // Cálculo inicial
+  calculator.calcular(true);
+  
+  // Actualización periódica de tasas
+  setInterval(() => calculator.actualizarTasasUI(), 60000);
 });
