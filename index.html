@@ -151,6 +151,17 @@ if (platform === "ios") {
   }
 }
 </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const logo = document.querySelector('.logo-principal');
+  if (logo) {
+    logo.addEventListener('load', () => logo.classList.add('loaded'));
+    // Si la imagen ya está cargada (por cache), aplica la clase de inmediato
+    if (logo.complete) logo.classList.add('loaded');
+  }
+});
+</script>
+
 
   <!-- Botón de instalación PWA (flotante) -->
 <div id="pwa-install-container" class="pwa-install-container" style="display:none;">
