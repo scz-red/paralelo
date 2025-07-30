@@ -1,6 +1,5 @@
 /* ===== VARIABLES Y ESTILOS BASE ===== */
 :root {
-  /* Colores principales modernos */
   --primary: #5e72e4;
   --primary-dark: #4a5ecd;
   --primary-light: #7f9cf5;
@@ -8,21 +7,18 @@
   --success: #48bb78;
   --warning: #ed8936;
   --accent: #9f7aea;
-
-  /* Escala de grises moderna */
   --background: #f7fafc;
   --card: #ffffff;
   --text: #2d3748;
   --text-light: #718096;
   --border: #e2e8f0;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --glass: rgba(255, 255, 255, 0.9);
+  --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --glass: rgba(255,255,255,0.9);
   --radius-lg: 12px;
   --radius-md: 8px;
   --radius-sm: 4px;
 }
 
-/* Tema oscuro elegante */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #1a202c;
@@ -30,14 +26,12 @@
     --text: #f7fafc;
     --text-light: #a0aec0;
     --border: #4a5568;
-    --glass: rgba(45, 55, 72, 0.9);
+    --glass: rgba(45,55,72,0.9);
   }
 }
 
-/* Importar tipografías modernas de Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@500;600;700&display=swap');
 
-/* Reset moderno */
 * {
   margin: 0;
   padding: 0;
@@ -56,14 +50,14 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Tipografías para títulos */
+/* ===== TIPOGRAFÍA PARA TÍTULOS ===== */
 h1, h2, h3, h4, .section-title {
   font-family: 'Manrope', sans-serif;
   font-weight: 700;
   letter-spacing: -0.025em;
 }
 
-/* ===== ESTRUCTURA PRINCIPAL MODERNA ===== */
+/* ===== ESTRUCTURA PRINCIPAL ===== */
 .app-container {
   width: 100%;
   max-width: 440px;
@@ -76,9 +70,9 @@ h1, h2, h3, h4, .section-title {
   border-radius: var(--radius-lg);
 }
 
-/* ===== HEADER ELEGANTE ===== */
+/* ===== HEADER PROFESIONAL ===== */
 .header {
-  padding: 28px 24px 90px;
+  padding: 20px 20px 60px;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
   position: relative;
@@ -91,8 +85,7 @@ h1, h2, h3, h4, .section-title {
   content: "";
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
+  left: 0; right: 0;
   height: 40px;
   background: var(--card);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
@@ -101,29 +94,45 @@ h1, h2, h3, h4, .section-title {
 
 .wave-bg {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   opacity: 0.15;
 }
 
-.header h1 {
-  font-size: 1.8rem;
-  margin-bottom: 12px;
-  position: relative;
-  z-index: 3;
-  line-height: 1.2;
+/* ===== LOGO PROFESIONAL Y RESPONSIVE ===== */
+.logo-principal {
+  width: 100%;
+  max-width: 240px;
+  margin: 0 auto 18px auto;
+  display: block;
+  filter: drop-shadow(0 3px 16px #212c3a33);
+  height: auto;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(.39,.575,.565,1) 0.1s;
+}
+.logo-principal.loaded {
+  opacity: 1;
 }
 
+@media (max-width: 500px) {
+  .logo-principal {
+    max-width: 75vw;
+    margin-bottom: 12px;
+  }
+}
+
+/* ===== DESCRIPCIÓN HEADER ===== */
 .header p {
-  font-size: 1rem;
-  opacity: 0.9;
+  font-size: 1.07em;
+  opacity: 0.95;
+  font-weight: 500;
+  margin: 16px 0 0 0;
+  letter-spacing: 0.01em;
   position: relative;
   z-index: 3;
-  font-weight: 300;
-  max-width: 80%;
-  margin: 0 auto;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ===== FORMULARIO MODERNO ===== */
@@ -138,7 +147,7 @@ h1, h2, h3, h4, .section-title {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   margin-bottom: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
 .input-group {
@@ -164,7 +173,7 @@ h1, h2, h3, h4, .section-title {
   background: var(--background);
   color: var(--text);
   font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
   box-shadow: var(--shadow);
   font-family: 'Inter', sans-serif;
 }
@@ -178,8 +187,7 @@ h1, h2, h3, h4, .section-title {
 
 .currency-selector {
   position: absolute;
-  right: 12px;
-  bottom: 12px;
+  right: 12px; bottom: 12px;
   background: var(--primary);
   color: white;
   padding: 6px 14px;
@@ -190,7 +198,7 @@ h1, h2, h3, h4, .section-title {
   letter-spacing: 0.025em;
 }
 
-/* ===== TASAS DE REFERENCIA ELEGANTES ===== */
+/* ===== TASAS DE REFERENCIA ===== */
 .tasas-referencia {
   display: flex;
   justify-content: space-between;
@@ -206,12 +214,11 @@ h1, h2, h3, h4, .section-title {
   text-align: center;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
 }
-
 .tasa-item:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
 }
 
 .tasa-monedas {
@@ -221,7 +228,6 @@ h1, h2, h3, h4, .section-title {
   font-weight: 500;
   letter-spacing: 0.025em;
 }
-
 .tasa-valor {
   font-weight: 700;
   font-size: 1.2rem;
@@ -229,11 +235,10 @@ h1, h2, h3, h4, .section-title {
   font-family: 'Manrope', sans-serif;
 }
 
-/* ===== RESULTADOS MODERNOS ===== */
+/* ===== RESULTADOS ===== */
 .results {
   padding: 0 24px 24px;
 }
-
 .section-title {
   font-size: 1.1rem;
   margin: 28px 0 20px;
@@ -242,12 +247,10 @@ h1, h2, h3, h4, .section-title {
   align-items: center;
   gap: 12px;
 }
-
 .section-title i {
   color: var(--primary);
   font-size: 1.2rem;
 }
-
 .currency-list {
   list-style: none;
   background: var(--card);
@@ -257,47 +260,34 @@ h1, h2, h3, h4, .section-title {
   border: 1px solid var(--border);
 }
 
-/* ===== ITEMS DE MONEDA ELEGANTES ===== */
+/* ===== ITEMS DE MONEDA ===== */
 @keyframes fadeIn {
-  from { 
-    opacity: 0; 
-    transform: translateY(10px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
-  }
+  from { opacity: 0; transform: translateY(10px);}
+  to   { opacity: 1; transform: translateY(0);}
 }
-
 .currency-item {
   display: flex;
   align-items: center;
   padding: 16px 20px;
   border-bottom: 1px solid var(--border);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  animation: fadeIn 0.4s cubic-bezier(0.4,0,0.2,1) forwards;
   opacity: 0;
   background: var(--card);
 }
-
 .currency-item:nth-child(1) { animation-delay: 0.1s; }
 .currency-item:nth-child(2) { animation-delay: 0.2s; }
 .currency-item:nth-child(3) { animation-delay: 0.3s; }
 .currency-item:nth-child(4) { animation-delay: 0.4s; }
-
-.currency-item:last-child {
-  border-bottom: none;
-}
-
+.currency-item:last-child { border-bottom: none; }
 .currency-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   background: var(--glass);
 }
 
 .currency-icon {
-  width: 48px;
-  height: 48px;
+  width: 48px; height: 48px;
   border-radius: 50%;
   background: rgba(94, 114, 228, 0.1);
   display: flex;
@@ -308,28 +298,21 @@ h1, h2, h3, h4, .section-title {
   flex-shrink: 0;
   transition: all 0.3s ease;
 }
-
 .currency-item:hover .currency-icon {
   background: rgba(94, 114, 228, 0.2);
   transform: scale(1.05);
 }
-
 .currency-icon img {
   width: 24px;
   height: 24px;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
-
 .currency-item:hover .currency-icon img {
   transform: scale(1.15);
 }
 
-.currency-details {
-  flex: 1;
-  min-width: 0;
-}
-
+.currency-details { flex: 1; min-width: 0; }
 .currency-name {
   font-weight: 600;
   font-size: 1rem;
@@ -338,13 +321,11 @@ h1, h2, h3, h4, .section-title {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .currency-code {
   font-size: 0.8rem;
   color: var(--text-light);
   letter-spacing: 0.05em;
 }
-
 .currency-value {
   font-weight: 700;
   text-align: right;
@@ -352,7 +333,6 @@ h1, h2, h3, h4, .section-title {
   font-family: 'Manrope', sans-serif;
   color: var(--primary);
 }
-
 .currency-subvalue {
   font-size: 0.75rem;
   color: var(--text-light);
@@ -360,14 +340,13 @@ h1, h2, h3, h4, .section-title {
   margin-top: 4px;
 }
 
-/* ===== LOADER ELEGANTE ===== */
+/* ===== LOADER ===== */
 .loading {
   padding: 48px 24px;
   text-align: center;
   color: var(--text-light);
   font-size: 1rem;
 }
-
 .loading i {
   font-size: 1.8rem;
   margin-bottom: 16px;
@@ -375,15 +354,11 @@ h1, h2, h3, h4, .section-title {
   display: block;
   animation: spin 1s linear infinite;
 }
-
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from { transform: rotate(0deg);}
+  to   { transform: rotate(360deg);}
 }
-
-.loading.error {
-  color: var(--error);
-}
+.loading.error { color: var(--error); }
 
 /* ===== BOTÓN PWA MODERNO ===== */
 .pwa-install-container {
@@ -391,9 +366,8 @@ h1, h2, h3, h4, .section-title {
   bottom: 24px;
   right: 24px;
   z-index: 1000;
-  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.5s cubic-bezier(0.4,0,0.2,1);
 }
-
 .pwa-install-btn {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
@@ -403,25 +377,21 @@ h1, h2, h3, h4, .section-title {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
   font-family: 'Manrope', sans-serif;
   letter-spacing: 0.025em;
 }
-
 .pwa-install-btn:hover {
   transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
 }
+.pwa-install-btn i { font-size: 1.2rem; }
 
-.pwa-install-btn i {
-  font-size: 1.2rem;
-}
-
-/* ===== TOAST NOTIFICATIONS ELEGANTES ===== */
+/* ===== TOAST NOTIFICATIONS ===== */
 .toast {
   position: fixed;
   bottom: 24px;
@@ -431,37 +401,24 @@ h1, h2, h3, h4, .section-title {
   color: var(--text);
   padding: 16px 28px;
   border-radius: var(--radius-md);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
   z-index: 1000;
   opacity: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
   display: flex;
   align-items: center;
   gap: 12px;
   max-width: 90%;
   width: auto;
 }
-
 .toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
-
-.toast i {
-  font-size: 1.4rem;
-}
-
-.toast.success {
-  border-left: 4px solid var(--success);
-}
-
-.toast.error {
-  border-left: 4px solid var(--error);
-}
-
-.toast.warning {
-  border-left: 4px solid var(--warning);
-}
+.toast i { font-size: 1.4rem; }
+.toast.success { border-left: 4px solid var(--success);}
+.toast.error { border-left: 4px solid var(--error);}
+.toast.warning { border-left: 4px solid var(--warning); }
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 480px) {
@@ -470,86 +427,28 @@ h1, h2, h3, h4, .section-title {
     max-width: 100%;
     border-radius: 0;
   }
-  
   .header {
-    padding: 24px 20px 80px;
+    padding: 18px 12px 60px;
   }
-  
-  .header h1 {
-    font-size: 1.6rem;
-  }
-  
   .pwa-install-container {
     bottom: 80px;
-    right: 16px;
+    right: 12px;
   }
-  
   .pwa-install-btn {
     padding: 12px 20px;
-    font-size: 0.9rem;
+    font-size: 0.93rem;
   }
 }
 
-/* ===== ANIMACIONES MODERNAS ===== */
+/* ===== ANIMACIONES ===== */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px);}
+  to   { opacity: 1; transform: translateY(0);}
 }
-
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
+  0%, 100% { transform: translateY(0);}
+  50%      { transform: translateY(-6px);}
 }
-
-/* Efecto flotante para elementos interactivos */
-.currency-item:hover, 
-.tasa-item:hover, 
-.pwa-install-btn:hover {
+.currency-item:hover, .tasa-item:hover, .pwa-install-btn:hover {
   animation: float 1.5s ease-in-out infinite;
-}
-.logo-principal {
-  width: 100%;
-  max-width: 280px;
-  margin: 0 auto 12px auto;
-  display: block;
-  filter: drop-shadow(0 3px 16px #212c3a33);
-  height: auto;
-}
-@media (max-width: 500px) {
-  .logo-principal {
-    max-width: 85vw;
-    margin-bottom: 10px;
-  }
-  .logo-principal {
-  width: 100%;
-  max-width: 280px;
-  margin: 0 auto 12px auto;
-  display: block;
-  filter: drop-shadow(0 3px 16px #212c3a33);
-  height: auto;
-}
-@media (max-width: 500px) {
-  .logo-principal {
-    max-width: 85vw;
-    margin-bottom: 10px;
-  }
-  .logo-principal {
-  opacity: 0;
-  transition: opacity 0.8s cubic-bezier(.39,.575,.565,1) 0.1s;
-}
-.logo-principal.loaded {
-  opacity: 1;
-}
-}
-
 }
