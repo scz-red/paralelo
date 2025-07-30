@@ -517,3 +517,39 @@ h1, h2, h3, h4, .section-title {
 .pwa-install-btn:hover {
   animation: float 1.5s ease-in-out infinite;
 }
+.logo-principal {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto 12px auto;
+  display: block;
+  filter: drop-shadow(0 3px 16px #212c3a33);
+  height: auto;
+}
+@media (max-width: 500px) {
+  .logo-principal {
+    max-width: 85vw;
+    margin-bottom: 10px;
+  }
+  .logo-principal {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto 12px auto;
+  display: block;
+  filter: drop-shadow(0 3px 16px #212c3a33);
+  height: auto;
+}
+@media (max-width: 500px) {
+  .logo-principal {
+    max-width: 85vw;
+    margin-bottom: 10px;
+  }
+  .logo-principal {
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(.39,.575,.565,1) 0.1s;
+}
+.logo-principal.loaded {
+  opacity: 1;
+}
+}
+
+}
