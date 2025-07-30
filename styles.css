@@ -317,23 +317,6 @@ body {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
-/* Estilos para errores */
-.loading.error {
-  color: #ff4757;
-  animation: shake 0.5s;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-5px); }
-  40%, 80% { transform: translateX(5px); }
-}
-
-/* Estilos para imágenes faltantes */
-.currency-icon img[src*="placeholder.com"] {
-  filter: grayscale(100%);
-  opacity: 0.7;
-}
 
 @media (max-width: 480px) {
   .app-container {
