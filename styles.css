@@ -32,15 +32,26 @@ body {
   line-height: 1.6;
 }
 
-/* ===== SOLO EL HEADER AZUL ===== */
+.app-container {
+  background: #fff !important;
+  box-shadow: var(--shadow);
+  border-radius: var(--radius-lg);
+  max-width: 400px;
+  margin: 34px auto 0 auto;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ===== HEADER (Azul solo arriba, menos alto) ===== */
 .header {
-  padding: 28px 22px 52px 22px;
+  padding: 18px 22px 36px 22px; /* reducido el espacio */
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: #fff !important;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   text-align: center;
   position: relative;
 }
+
 .header::after {
   content: "";
   display: block;
@@ -51,73 +62,59 @@ body {
   border-radius: 32px 32px 0 0;
   z-index: 2;
 }
+
 .logo-principal {
-  width: 152px;
-  margin: 0 auto 8px auto;
+  width: 145px;
+  margin: 0 auto 6px auto;
   display: block;
   border-radius: 12px;
 }
+
 .header p {
   color: #fff !important;
-  font-size: 1.11rem;
+  font-size: 1.07rem;
   font-weight: 500;
-  margin: 10px auto 0 auto;
+  margin: 8px auto 0 auto;
   opacity: 0.93;
   letter-spacing: 0.01em;
 }
 
-/* ===== FONDO BLANCO EN EL RESTO ===== */
-.app-container {
-  background: #fff !important;  /* <- SOLO BLANCO, NO GRADIENTE NI AZUL */
-  box-shadow: 0 4px 24px 0 rgba(50,60,120,0.09);
-  border-radius: 18px;
-  max-width: 400px;
-  margin: 44px auto 0 auto;
-  overflow: hidden;
-  position: relative;
-}
-
-.input-container,
-.currency-list,
-.tasa-item,
-.results {
-  background: #fff !important;
-}
-
+/* ===== INPUT CONTAINER (Card flotante y bien blanco) ===== */
 .input-container {
-  padding: 26px 22px;
-  border-radius: var(--radius-lg);
+  background: #fff !important;
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 #e8e9ef30;
+  margin: -22px 18px 18px 18px; /* flota sobre el azul, ajusta a tu gusto */
+  padding: 22px 17px 16px 17px;
   border: 1px solid var(--border);
-  margin: -35px 10px 18px 10px;
-  box-shadow: 0 2px 16px 0 #e8e9ef40;
+  position: relative;
+  z-index: 5;
 }
 
+/* ===== GRUPO INPUT ===== */
 .input-group {
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   position: relative;
 }
-
 .input-group label {
   font-size: 1rem;
   color: var(--text-light);
   font-weight: 500;
-  margin-bottom: 9px;
+  margin-bottom: 8px;
   letter-spacing: 0.02em;
 }
-
 .input-group input {
   width: 100%;
-  padding: 15px 19px;
-  font-size: 1.15rem;
+  padding: 14px 18px;
+  font-size: 1.14rem;
   border-radius: var(--radius-md);
   border: 1.5px solid var(--border);
   background: #fff;
   color: #191919;
   font-weight: 500;
   box-shadow: none;
-  transition: border 0.24s, box-shadow 0.18s;
+  transition: border 0.22s, box-shadow 0.15s;
 }
-
 .input-group input:focus {
   border-color: var(--primary);
   outline: none;
@@ -129,54 +126,53 @@ body {
   right: 13px; bottom: 13px;
   background: var(--primary);
   color: #fff;
-  padding: 6px 16px;
+  padding: 6px 15px;
   border-radius: var(--radius-md);
   font-size: 0.88rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
   border: none;
   box-shadow: none;
 }
 
+/* ===== TASAS Y LISTAS ===== */
 .tasas-referencia {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 18px;
+  margin-top: 13px;
 }
 .tasa-item {
   flex: 1;
   background: #fff !important;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
-  padding: 17px 7px 12px 7px;
+  padding: 13px 5px 10px 5px;
   text-align: center;
-  box-shadow: 0 2px 12px 0 #e8e9ef22;
-  transition: box-shadow 0.22s;
+  box-shadow: 0 2px 8px 0 #e8e9ef15;
+  transition: box-shadow 0.18s;
 }
 .tasa-monedas {
-  font-size: 0.89rem;
+  font-size: 0.88rem;
   color: var(--text-light);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   font-weight: 500;
 }
 .tasa-valor {
   font-weight: 700;
-  font-size: 1.18rem;
+  font-size: 1.12rem;
   color: var(--success);
-  letter-spacing: 0.01em;
   font-family: 'Satoshi', Arial, sans-serif;
+  letter-spacing: 0.01em;
 }
 
-/* ===== RESULTADOS Y LISTAS ===== */
 .results {
-  padding: 2px 18px 18px 18px;
+  padding: 0 13px 13px 13px;
 }
 .section-title {
-  font-size: 1.08rem;
+  font-size: 1.05rem;
   color: #191919;
   font-weight: 600;
-  margin: 28px 0 16px 0;
+  margin: 20px 0 13px 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -184,7 +180,7 @@ body {
 }
 .section-title i {
   color: var(--primary);
-  font-size: 1.16rem;
+  font-size: 1.14rem;
 }
 
 .currency-list {
@@ -193,16 +189,16 @@ body {
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
   overflow: hidden;
-  box-shadow: 0 2px 16px 0 #e8e9ef25;
+  box-shadow: 0 2px 12px 0 #e8e9ef18;
 }
 
 .currency-item {
   display: flex;
   align-items: center;
-  padding: 15px 17px;
+  padding: 13px 16px;
   border-bottom: 1px solid var(--border);
   background: #fff !important;
-  transition: background 0.17s;
+  transition: background 0.14s;
 }
 .currency-item:last-child {
   border-bottom: none;
@@ -210,30 +206,28 @@ body {
 .currency-item:hover {
   background: #f3f8ff !important;
 }
-
 .currency-icon {
-  width: 40px; height: 40px;
+  width: 38px; height: 38px;
   border-radius: 50%;
   background: #f4f4f7;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 13px;
+  margin-right: 12px;
   flex-shrink: 0;
 }
 .currency-icon img {
-  width: 23px;
-  height: 23px;
+  width: 21px;
+  height: 21px;
   object-fit: contain;
 }
-
 .currency-details {
   flex: 1;
   min-width: 0;
 }
 .currency-name {
   font-weight: 600;
-  font-size: 1.01rem;
+  font-size: 0.99rem;
   color: #191919;
   margin-bottom: 1px;
   white-space: nowrap;
@@ -241,20 +235,20 @@ body {
   text-overflow: ellipsis;
 }
 .currency-code {
-  font-size: 0.82rem;
+  font-size: 0.81rem;
   color: var(--text-light);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   margin-left: 1px;
 }
 .currency-value {
   font-weight: 700;
   text-align: right;
-  font-size: 1.08rem;
+  font-size: 1.04rem;
   color: #191919;
   font-family: 'Satoshi', Arial, sans-serif;
 }
 .currency-subvalue {
-  font-size: 0.77rem;
+  font-size: 0.74rem;
   color: var(--text-light);
   text-align: right;
   margin-top: 2px;
@@ -268,8 +262,8 @@ body {
   font-size: 1rem;
 }
 .loading i {
-  font-size: 1.45rem;
-  margin-bottom: 13px;
+  font-size: 1.35rem;
+  margin-bottom: 10px;
   color: var(--primary);
   display: block;
   animation: spin 1s linear infinite;
@@ -302,13 +296,13 @@ body {
   gap: 12px;
   cursor: pointer;
   font-family: 'Satoshi', Arial, sans-serif;
-  transition: background 0.17s, transform 0.14s;
+  transition: background 0.15s, transform 0.13s;
 }
 .pwa-install-btn:hover {
   background: linear-gradient(90deg, #23b26d, #2742d7);
   transform: scale(1.04);
 }
-.pwa-install-btn i { font-size: 1.14rem; }
+.pwa-install-btn i { font-size: 1.13rem; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 500px) {
@@ -319,12 +313,13 @@ body {
     box-shadow: none;
   }
   .input-container {
-    margin: -32px 0 13px 0;
-    padding: 17px 6vw;
+    margin: -24px 0 10px 0;
+    padding: 13px 4vw 14px 4vw;
   }
   .header {
     border-radius: 0 0 28px 28px;
-    padding-bottom: 38px;
+    padding-bottom: 30px;
+    padding-top: 14px;
   }
   .results {
     padding: 1px 2vw 10vw 2vw;
