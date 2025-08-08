@@ -1,72 +1,503 @@
-Para que tu aplicación se pueda instalar como PWA en Android y agregar en iOS, necesitas:
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PARALELO</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-1. **Manifest Web App**
-Agrega en `<head>`:
-```html
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#3b82f6">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="PARALELO">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-```
+  <!-- PWA -->
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="manifest" href="./manifest.json" />
 
-2. **Archivo `manifest.json`** en la raíz:
-```json
-{
-  "name": "Calculadora Paralelo",
-  "short_name": "Paralelo",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#f7f7f8",
-  "theme_color": "#3b82f6",
-  "icons": [
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+  <!-- iOS Add to Home Screen -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Paralelo" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+
+  <!-- Favicon/Android -->
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png" />
+
+  <style>
+    :root {
+      /* Paleta minimalista: gris + acento azul */
+      --accent: #3b82f6;            /* Azul (Tailwind blue-500) */
+      --accent-dark: #1e40af;       /* Azul oscuro */
+      --background: #f7f7f8;        /* Fondo claro neutro */
+      --card: #ffffff;
+      --text: #1f2937;              /* Gris carbón */
+      --text-light: #6b7280;        /* Gris medio */
+      --border: rgba(0, 0, 0, 0.08);
+      --shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
+      --glass: rgba(59, 130, 246, 0.06);
     }
-  ]
-}
-```
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0b1020;       /* Azul/nocturno muy oscuro */
+        --card: #0f172a;             /* Slate-900 */
+        --text: #e5e7eb;
+        --text-light: #9ca3af;
+        --border: rgba(255, 255, 255, 0.08);
+        --glass: rgba(59, 130, 246, 0.12);
+      }
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      line-height: 1.55;
+    }
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      min-height: 100vh;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    /* Encabezado minimalista */
+    .header {
+      padding: 24px 20px 80px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #fff;
+      position: relative;
+    }
+    .header::after {
+      content: "";
+      position: absolute; inset-inline: 0; bottom: 0; height: 40px;
+      background: var(--card);
+      border-radius: 24px 24px 0 0;
+    }
+    .header h1 {
+      font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px;
+    }
+    .header p { font-size: 0.95rem; opacity: 0.95; }
 
-3. **Service Worker básico** para cache offline (`service-worker.js`):
-```javascript
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open('paralelo-cache').then(cache => {
-      return cache.addAll([
-        '/',
-        '/index.html',
-        '/manifest.json',
-        '/icons/icon-192.png',
-        '/icons/icon-512.png'
-      ]);
-    })
-  );
-});
+    /* Contenedor del input */
+    .input-container {
+      padding: 24px 20px;
+      margin-top: -60px;
+      position: relative; z-index: 1;
+      background: var(--glass);
+      border-radius: 24px 24px 0 0;
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      border: 1px solid var(--border);
+    }
+    .input-group { position: relative; margin-bottom: 16px; }
+    .input-group label { display: block; font-size: 0.84rem; font-weight: 600; margin-bottom: 8px; color: var(--text-light); }
+    .input-group input {
+      width: 100%; padding: 16px 52px 16px 16px; font-size: 1.05rem; border-radius: 14px;
+      border: 1px solid var(--border); background: #fff; color: var(--text); font-weight: 600; transition: box-shadow .2s, transform .15s;
+    }
+    .input-group input:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.18);
+      transform: translateY(-1px);
+    }
+    .input-help { margin-top: 6px; font-size: 0.8rem; color: var(--text-light); }
+    .input-error { margin-top: 6px; font-size: 0.82rem; color: #ef4444; display: none; }
+    .input-group.invalid input { border-color: #ef4444; box-shadow: 0 0 0 4px rgba(239,68,68,0.15); }
+    .input-group.invalid .input-error { display: block; }
 
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(response => {
-      return response || fetch(e.request);
-    })
-  );
-});
-```
+    /* Selector bandera fijo a la derecha del input */
+    .currency-selector { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; height: 100%; }
+    .currency-selector img { width: 32px; height: 22px; object-fit: cover; border-radius: 4px; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.16); }
 
-4. **Registrar el Service Worker** en tu JS principal:
-```javascript
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js')
-    .then(() => console.log('SW registrado'))
-    .catch(err => console.error('SW error', err));
-}
-```
+    /* Tasas referencia */
+    .tasas-referencia {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px;
+    }
+    .tasa-item {
+      background: var(--card);
+      border-radius: 14px; padding: 12px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow);
+    }
+    .tasa-monedas { font-size: 0.78rem; color: var(--text-light); margin-bottom: 4px; }
+    .tasa-valor { font-weight: 800; font-size: 1.05rem; color: var(--accent); letter-spacing: 0.02em; }
 
-Con esto, tu app será instalable en Android y agregable a la pantalla de inicio en iOS.
+    .results { padding: 0 20px 20px; }
+    .section-title { font-size: 0.95rem; font-weight: 700; margin: 22px 0 12px; color: var(--text-light); display: flex; align-items: center; gap: 10px; }
+    .section-title i { color: var(--accent); }
+
+    .currency-list { list-style: none; background: var(--card); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .currency-item { display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border); transition: transform .2s; animation: fadeIn .35s ease-out both; background: var(--card); }
+    .currency-item:last-child { border-bottom: none; }
+    .currency-item:hover { transform: translateY(-2px); }
+
+    .currency-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(59,130,246,0.10); display: grid; place-items: center; margin-right: 14px; overflow: hidden; flex-shrink: 0; }
+    .currency-icon img { width: 24px; height: 24px; object-fit: contain; transition: transform .2s; }
+    .currency-item:hover .currency-icon img { transform: scale(1.06); }
+
+    .currency-details { flex: 1; min-width: 0; }
+    .currency-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .currency-code { font-size: 0.75rem; color: var(--text-light); }
+
+    .currency-right { text-align: right; }
+    .currency-value { font-weight: 800; font-size: 1rem; letter-spacing: 0.01em; }
+    .currency-subvalue { font-size: 0.75rem; color: var(--text-light); margin-top: 2px; }
+
+    .loading { padding: 40px 20px; text-align: center; color: var(--text-light); font-size: 0.9rem; }
+    .loading i { font-size: 1.5rem; margin-bottom: 10px; color: var(--accent); display: block; }
+
+    @media (max-width: 480px) {
+      .app-container { min-height: 100vh; max-width: 100%; border-radius: 0; }
+      .header { padding: 24px 20px 80px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="header" role="banner">
+      <h1>Calculadora al Paralelo</h1>
+      <p>Convierte BOB a monedas fiat y cripto en tiempo real</p>
+    </div>
+
+    <div class="input-container">
+      <div class="input-group" id="group-monto">
+        <label for="monto">Monto a convertir</label>
+        <input type="text" id="monto" value="1000" placeholder="Ej: 1000" autofocus inputmode="decimal" aria-describedby="montoHelp montoError" aria-invalid="false" />
+        <span class="currency-selector" aria-hidden="true">
+          <img src="paralelo/bandera-bolivia.png" alt="Bolivia">
+        </span>
+        <div id="montoHelp" class="input-help">Monto en bolivianos (hasta 2 decimales).</div>
+        <div id="montoError" class="input-error">Ingrese un monto válido (positivo, hasta 2 decimales).</div>
+      </div>
+
+      <div class="tasas-referencia" aria-label="Tasas de referencia">
+        <div class="tasa-item" aria-live="polite">
+          <div class="tasa-monedas">USD/BOB</div>
+          <div class="tasa-valor" id="tasa-usd">--</div>
+        </div>
+        <div class="tasa-item" aria-live="polite">
+          <div class="tasa-monedas">EUR/BOB</div>
+          <div class="tasa-valor" id="tasa-eur">--</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="results" aria-live="polite" aria-atomic="true">
+      <div class="section-title">
+        <i class="fas fa-money-bill-wave"></i>
+        <span>Monedas tradicionales</span>
+      </div>
+      <ul class="currency-list" id="fiat-list"></ul>
+
+      <div class="section-title">
+        <i class="fas fa-coins"></i>
+        <span>Criptomonedas</span>
+      </div>
+      <ul class="currency-list" id="crypto-list"></ul>
+
+      <div id="loader-global" style="display:none;" role="status" aria-live="polite">
+        <div class="loading">
+          <i class="fas fa-spinner fa-spin"></i>
+          Calculando tasas de cambio...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registro del Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+  </script>
+
+  <script>
+    // ====== Configuración ======
+    const fiatCurrencies = {
+      "Dólar estadounidense": { code: "USD", icon: "https://currencyfreaks.com/photos/flags/usd.png" },
+      "Euro": { code: "EUR", icon: "https://currencyfreaks.com/photos/flags/eur.png" },
+      "Peso colombiano": { code: "COP", icon: "https://currencyfreaks.com/photos/flags/cop.png" },
+      "Peso argentino": { code: "ARS", icon: "https://currencyfreaks.com/photos/flags/ars.png" },
+      "Peso chileno": { code: "CLP", icon: "https://currencyfreaks.com/photos/flags/clp.png" },
+      "Real brasileño": { code: "BRL", icon: "https://currencyfreaks.com/photos/flags/brl.png" },
+      "Sol peruano": { code: "PEN", icon: "https://currencyfreaks.com/photos/flags/pen.png" },
+      "Yuan chino": { code: "CNY", icon: "https://currencyfreaks.com/photos/flags/cny.png" },
+      "Guaraní paraguayo": { code: "PYG", icon: "https://currencyfreaks.com/photos/flags/pyg.png" },
+      "Peso mexicano": { code: "MXN", icon: "https://currencyfreaks.com/photos/flags/mxn.png" }
+    };
+
+    const cryptoCurrencies = [
+      { name: 'Tether (USDT)', code: 'USDT', icon: 'https://paralelo.scz.red/paralelo/1.png' },
+      { name: 'Bitcoin', code: 'BTC', icon: 'https://paralelo.scz.red/paralelo/2.png' },
+      { name: 'Ethereum', code: 'ETH', icon: 'https://paralelo.scz.red/paralelo/3.png' },
+      { name: 'USD Coin', code: 'USDC', icon: 'https://paralelo.scz.red/paralelo/4.png' },
+      { name: 'Dogecoin', code: 'DOGE', icon: 'https://paralelo.scz.red/paralelo/5.png' },
+      { name: 'Solana', code: 'SOL', icon: 'https://paralelo.scz.red/paralelo/6.png' },
+      { name: 'Pepe', code: 'PEPE', icon: 'https://paralelo.scz.red/paralelo/7.png' },
+      { name: 'Trump', code: 'TRUMP', icon: 'https://paralelo.scz.red/paralelo/8.png' }
+    ];
+
+    const montoInput = document.getElementById('monto');
+    const groupMonto  = document.getElementById('group-monto');
+    const fiatList = document.getElementById('fiat-list');
+    const cryptoList = document.getElementById('crypto-list');
+    const loaderGlobal = document.getElementById('loader-global');
+    const tasaUSD = document.getElementById('tasa-usd');
+    const tasaEUR = document.getElementById('tasa-eur');
+
+    // Caches
+    let memCache = {}; // cache en memoria por monto
+    const CACHE_EXP = 60_000; // 1 min
+
+    // Helpers almacenamiento persistente
+    const store = {
+      get(key) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (!raw) return null;
+          const obj = JSON.parse(raw);
+          if (obj && obj.t && (Date.now() - obj.t) < CACHE_EXP) return obj.v;
+          return null;
+        } catch { return null; }
+      },
+      set(key, value) {
+        try { localStorage.setItem(key, JSON.stringify({ v: value, t: Date.now() })); } catch {}
+      }
+    };
+
+    function clearResults() {
+      fiatList.replaceChildren();
+      cryptoList.replaceChildren();
+    }
+
+    function showGlobalLoader(show = true) {
+      loaderGlobal.style.display = show ? 'block' : 'none';
+      if (show) { clearResults(); }
+    }
+
+    function createEl(tag, opts = {}, children = []) {
+      const el = document.createElement(tag);
+      for (const [k, v] of Object.entries(opts)) {
+        if (k === 'class') el.className = v;
+        else if (k === 'text') el.textContent = v;
+        else if (k === 'html') el.innerHTML = v;
+        else el.setAttribute(k, v);
+      }
+      children.forEach(c => el.appendChild(c));
+      return el;
+    }
+
+    function renderCurrencyList(listElement, data, dictionary, isCrypto = false) {
+      listElement.replaceChildren();
+
+      if (isCrypto) {
+        cryptoCurrencies.forEach(crypto => {
+          const value = data[crypto.name] ?? data[crypto.code] ?? 0;
+
+          const li = createEl('li', { class: 'currency-item', role: 'listitem' });
+          const icon = createEl('div', { class: 'currency-icon' }, [
+            Object.assign(new Image(), { src: crypto.icon, alt: crypto.name, loading: 'lazy', onerror() { this.onerror = null; this.src = `https://cryptologos.cc/logos/${crypto.code.toLowerCase()}-${crypto.code.toLowerCase()}-logo.png`; } })
+          ]);
+
+          const details = createEl('div', { class: 'currency-details' }, [
+            createEl('div', { class: 'currency-name', text: crypto.name }),
+            createEl('div', { class: 'currency-code', text: crypto.code })
+          ]);
+
+          const right = createEl('div', { class: 'currency-right' }, [
+            createEl('div', { class: 'currency-value', text: formatNumber(value) })
+          ]);
+
+          li.append(icon, details, right);
+          listElement.appendChild(li);
+        });
+        return;
+      }
+
+      for (const [name, value] of Object.entries(data)) {
+        const info = dictionary[name] || { code: name.slice(0, 3).toUpperCase(), icon: `https://via.placeholder.com/40/3b82f6/ffffff?text=${name.slice(0,2)}` };
+
+        const li = createEl('li', { class: 'currency-item', role: 'listitem' });
+        const icon = createEl('div', { class: 'currency-icon' }, [
+          Object.assign(new Image(), { src: info.icon, alt: name, loading: 'lazy', onerror() { this.onerror = null; this.src = `https://via.placeholder.com/40/3b82f6/ffffff?text=${(info.code||'NA').slice(0,2)}`; } })
+        ]);
+
+        const details = createEl('div', { class: 'currency-details' }, [
+          createEl('div', { class: 'currency-name', text: name }),
+          createEl('div', { class: 'currency-code', text: info.code })
+        ]);
+
+        const right = createEl('div', { class: 'currency-right' }, [
+          createEl('div', { class: 'currency-value', text: formatNumber(value) })
+        ]);
+
+        li.append(icon, details, right);
+        listElement.appendChild(li);
+      }
+    }
+
+    function formatNumber(v) {
+      const num = typeof v === 'number' ? v : Number(v);
+      if (!Number.isFinite(num)) return '--';
+      return num.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function validarMontoStr(str) {
+      if (!str) return false;
+      const cleaned = str.replace(/,/g, '.').trim();
+      const num = Number(cleaned);
+      if (!Number.isFinite(num) || num <= 0) return false;
+      const parts = cleaned.split('.');
+      if (parts[1] && parts[1].length > 2) return false;
+      if (cleaned.replace('.', '').length > 10) return false;
+      return true;
+    }
+
+    function setMontoValidity(valid) {
+      if (valid) {
+        groupMonto.classList.remove('invalid');
+        montoInput.setAttribute('aria-invalid', 'false');
+      } else {
+        groupMonto.classList.add('invalid');
+        montoInput.setAttribute('aria-invalid', 'true');
+      }
+    }
+
+    function offline() { return !navigator.onLine; }
+
+    async function actualizarTasasUI(force=false) {
+      const cacheKey = 'tasas:usd_eur';
+      if (!force) {
+        const cached = store.get(cacheKey);
+        if (cached) {
+          tasaUSD.textContent = cached.usd; tasaEUR.textContent = cached.eur; return;
+        }
+      }
+      if (offline()) { tasaUSD.textContent = 'Sin conexión'; tasaEUR.textContent = 'Sin conexión'; return; }
+
+      try {
+        const [resUSD, resEUR] = await Promise.all([
+          fetch('https://api.lupo.lat/cambio_a_bob?moneda=usd&monto=1'),
+          fetch('https://api.lupo.lat/cambio_a_bob?moneda=eur&monto=1')
+        ]);
+        const [dataUSD, dataEUR] = await Promise.all([resUSD.json(), resEUR.json()]);
+
+        const show = (d) => {
+          if (d && typeof d.resultado === 'number') return formatNumber(d.resultado);
+          if (d && d.resultado && !isNaN(d.resultado)) return formatNumber(Number(d.resultado));
+          return 'Error';
+        };
+
+        const usd = show(dataUSD); const eur = show(dataEUR);
+        tasaUSD.textContent = usd; tasaEUR.textContent = eur;
+        store.set(cacheKey, { usd, eur });
+      } catch (e) {
+        tasaUSD.textContent = 'Error'; tasaEUR.textContent = 'Error';
+      }
+    }
+
+    async function calcular(force=false) {
+      const raw = montoInput.value;
+      const isValid = validarMontoStr(raw);
+      setMontoValidity(isValid);
+      if (!isValid) { clearResults(); actualizarTasasUI(); return; }
+
+      const monto = raw.replace(/,/g, '.').trim();
+
+      if (!force && memCache[monto] && (Date.now() - memCache[monto].t) < CACHE_EXP) {
+        showGlobalLoader(false);
+        const { fiat, crypto } = memCache[monto];
+        renderCurrencyList(fiatList, fiat, fiatCurrencies, false);
+        renderCurrencyList(cryptoList, crypto, cryptoCurrencies, true);
+        actualizarTasasUI();
+        return;
+      }
+
+      const storeKey = `conv:${monto}`;
+      if (!force) {
+        const cached = store.get(storeKey);
+        if (cached) {
+          showGlobalLoader(false);
+          renderCurrencyList(fiatList, cached.fiat, fiatCurrencies, false);
+          renderCurrencyList(cryptoList, cached.crypto, cryptoCurrencies, true);
+          actualizarTasasUI();
+          memCache[monto] = { ...cached, t: Date.now() };
+          return;
+        }
+      }
+
+      if (offline()) {
+        clearResults(); showGlobalLoader(false);
+        tasaUSD.textContent = 'Sin conexión'; tasaEUR.textContent = 'Sin conexión';
+        fiatList.appendChild(createEl('div', { class: 'loading', text: 'Sin conexión' }));
+        return;
+      }
+
+      showGlobalLoader(true);
+      try {
+        const res = await fetch(`https://api.lupo.lat/convertir_bob?monto_bob=${encodeURIComponent(monto)}`);
+        if (!res.ok) throw new Error(`Error API: ${res.status}`);
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        const fiat = data.conversiones_fiat || {}; const crypto = data.conversiones_cripto || {};
+        showGlobalLoader(false);
+        renderCurrencyList(fiatList, fiat, fiatCurrencies, false);
+        renderCurrencyList(cryptoList, crypto, cryptoCurrencies, true);
+        actualizarTasasUI();
+
+        const payload = { fiat, crypto };
+        memCache[monto] = { ...payload, t: Date.now() };
+        store.set(storeKey, payload);
+      } catch (error) {
+        showGlobalLoader(false);
+        const msg = error.message && /network|fetch/i.test(error.message) ? 'Error de red. Verifique su conexión.' : 'Error al cargar datos. Intente nuevamente.';
+        fiatList.appendChild(createEl('div', { class: 'loading', text: msg }));
+      }
+    }
+
+    function preloadCryptoImages() {
+      cryptoCurrencies.forEach(crypto => { const img = new Image(); img.src = crypto.icon; });
+    }
+
+    // ==== Eventos ====
+    let debounce;
+    montoInput.addEventListener('input', () => {
+      clearTimeout(debounce);
+      debounce = setTimeout(() => calcular(), 500);
+    });
+
+    // Solo números y un punto/coma decimal
+    montoInput.addEventListener('keypress', (e) => {
+      const char = String.fromCharCode(e.which);
+      if (!/[0-9.,]/.test(char)) e.preventDefault();
+      if ((char === '.' || char === ',') && (montoInput.value.includes('.') || montoInput.value.includes(','))) e.preventDefault();
+    });
+
+    montoInput.addEventListener('paste', (e) => {
+      const value = (e.clipboardData || window.clipboardData).getData('text');
+      const cleaned = value.replace(/,/g, '.');
+      if (!/^\d+(\.\d{1,2})?$/.test(cleaned.trim())) e.preventDefault();
+    });
+
+    window.addEventListener('online', () => calcular(true));
+    window.addEventListener('offline', () => {
+      tasaUSD.textContent = 'Sin conexión';
+      tasaEUR.textContent = 'Sin conexión';
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      preloadCryptoImages();
+      montoInput.focus();
+      calcular(true);
+      actualizarTasasUI();
+      setInterval(() => actualizarTasasUI(), 60_000);
+    });
+  </script>
+</body>
+</html>
