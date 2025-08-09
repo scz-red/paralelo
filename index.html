@@ -4,36 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PARALELO</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Iconos / Favicon -->
+  <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
 
   <!-- PWA -->
   <meta name="theme-color" content="#0f172a" />
   <link rel="manifest" href="./manifest.json" />
 
-  <!-- iOS Add to Home Screen -->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Paralelo" />
-  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
-
-  <!-- Favicon/Android -->
-  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
     :root {
-      /* Paleta minimalista: gris + acento azul */
-      --accent: #3b82f6;            /* Azul (Tailwind blue-500) */
-      --accent-dark: #1e40af;       /* Azul oscuro */
-      --background: #f7f7f8;        /* Fondo claro neutro */
+      /* Paleta minimalista clara */
+      --accent: #3b82f6;
+      --accent-dark: #1e40af;
+      --background: #f7f7f8;
       --card: #ffffff;
-      --text: #1f2937;              /* Gris carbón */
-      --text-light: #6b7280;        /* Gris medio */
+      --text: #1f2937;
+      --text-light: #6b7280;
       --border: rgba(0, 0, 0, 0.08);
       --shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
       --glass: rgba(59, 130, 246, 0.06);
+      color-scheme: light; /* fuerza modo claro */
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
     body {
@@ -54,7 +51,7 @@
       box-shadow: var(--shadow);
       overflow: hidden;
     }
-    /* Encabezado minimalista */
+    /* Header */
     .header {
       padding: 24px 20px 80px;
       background: linear-gradient(135deg, var(--accent), var(--accent-dark));
@@ -67,12 +64,10 @@
       background: var(--card);
       border-radius: 24px 24px 0 0;
     }
-    .header h1 {
-      font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px;
-    }
+    .header h1 { font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
     .header p { font-size: 0.95rem; opacity: 0.95; }
 
-    /* Contenedor del input */
+    /* Input */
     .input-container {
       padding: 24px 20px;
       margin-top: -60px;
@@ -98,45 +93,33 @@
     .input-error { margin-top: 6px; font-size: 0.82rem; color: #ef4444; display: none; }
     .input-group.invalid input { border-color: #ef4444; box-shadow: 0 0 0 4px rgba(239,68,68,0.15); }
     .input-group.invalid .input-error { display: block; }
-
-    /* Selector bandera fijo a la derecha del input */
     .currency-selector { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; height: 100%; }
     .currency-selector img { width: 32px; height: 22px; object-fit: cover; border-radius: 4px; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.16); }
 
-    /* Tasas referencia */
-    .tasas-referencia {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px;
-    }
-    .tasa-item {
-      background: var(--card);
-      border-radius: 14px; padding: 12px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow);
-    }
+    /* Tasas */
+    .tasas-referencia { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    .tasa-item { background: var(--card); border-radius: 14px; padding: 12px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
     .tasa-monedas { font-size: 0.78rem; color: var(--text-light); margin-bottom: 4px; }
     .tasa-valor { font-weight: 800; font-size: 1.05rem; color: var(--accent); letter-spacing: 0.02em; }
 
+    /* Listas */
     .results { padding: 0 20px 20px; }
     .section-title { font-size: 0.95rem; font-weight: 700; margin: 22px 0 12px; color: var(--text-light); display: flex; align-items: center; gap: 10px; }
     .section-title i { color: var(--accent); }
-
     .currency-list { list-style: none; background: var(--card); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
-
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .currency-item { display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border); transition: transform .2s; animation: fadeIn .35s ease-out both; background: var(--card); }
     .currency-item:last-child { border-bottom: none; }
     .currency-item:hover { transform: translateY(-2px); }
-
     .currency-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(59,130,246,0.10); display: grid; place-items: center; margin-right: 14px; overflow: hidden; flex-shrink: 0; }
     .currency-icon img { width: 24px; height: 24px; object-fit: contain; transition: transform .2s; }
     .currency-item:hover .currency-icon img { transform: scale(1.06); }
-
     .currency-details { flex: 1; min-width: 0; }
     .currency-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .currency-code { font-size: 0.75rem; color: var(--text-light); }
-
     .currency-right { text-align: right; }
     .currency-value { font-weight: 800; font-size: 1rem; letter-spacing: 0.01em; }
     .currency-subvalue { font-size: 0.75rem; color: var(--text-light); margin-top: 2px; }
-
     .loading { padding: 40px 20px; text-align: center; color: var(--text-light); font-size: 0.9rem; }
     .loading i { font-size: 1.5rem; margin-bottom: 10px; color: var(--accent); display: block; }
 
@@ -144,9 +127,6 @@
       .app-container { min-height: 100vh; max-width: 100%; border-radius: 0; }
       .header { padding: 24px 20px 80px; }
     }
-    :root {
-  color-scheme: light;
-}
   </style>
 </head>
 <body>
@@ -368,9 +348,7 @@
       const cacheKey = 'tasas:usd_eur';
       if (!force) {
         const cached = store.get(cacheKey);
-        if (cached) {
-          tasaUSD.textContent = cached.usd; tasaEUR.textContent = cached.eur; return;
-        }
+        if (cached) { tasaUSD.textContent = cached.usd; tasaEUR.textContent = cached.eur; return; }
       }
       if (offline()) { tasaUSD.textContent = 'Sin conexión'; tasaEUR.textContent = 'Sin conexión'; return; }
 
@@ -390,7 +368,7 @@
         const usd = show(dataUSD); const eur = show(dataEUR);
         tasaUSD.textContent = usd; tasaEUR.textContent = eur;
         store.set(cacheKey, { usd, eur });
-      } catch (e) {
+      } catch {
         tasaUSD.textContent = 'Error'; tasaEUR.textContent = 'Error';
       }
     }
@@ -450,7 +428,7 @@
         store.set(storeKey, payload);
       } catch (error) {
         showGlobalLoader(false);
-        const msg = error.message && /network|fetch/i.test(error.message) ? 'Error de red. Verifique su conexión.' : 'Error al cargar datos. Intente nuevamente.';
+        const msg = /network|fetch/i.test(error.message) ? 'Error de red. Verifique su conexión.' : 'Error al cargar datos. Intente nuevamente.';
         fiatList.appendChild(createEl('div', { class: 'loading', text: msg }));
       }
     }
@@ -459,14 +437,13 @@
       cryptoCurrencies.forEach(crypto => { const img = new Image(); img.src = crypto.icon; });
     }
 
-    // ==== Eventos ====
+    // Eventos
     let debounce;
     montoInput.addEventListener('input', () => {
       clearTimeout(debounce);
       debounce = setTimeout(() => calcular(), 500);
     });
 
-    // Solo números y un punto/coma decimal
     montoInput.addEventListener('keypress', (e) => {
       const char = String.fromCharCode(e.which);
       if (!/[0-9.,]/.test(char)) e.preventDefault();
@@ -492,7 +469,6 @@
       actualizarTasasUI();
       setInterval(() => actualizarTasasUI(), 60_000);
     });
-    
   </script>
 </body>
 </html>
