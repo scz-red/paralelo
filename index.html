@@ -33,16 +33,7 @@
       --shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
       --glass: rgba(59, 130, 246, 0.06);
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --background: #0b1020;       /* Azul/nocturno muy oscuro */
-        --card: #0f172a;             /* Slate-900 */
-        --text: #e5e7eb;
-        --text-light: #9ca3af;
-        --border: rgba(255, 255, 255, 0.08);
-        --glass: rgba(59, 130, 246, 0.12);
-      }
-    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
     body {
@@ -153,6 +144,9 @@
       .app-container { min-height: 100vh; max-width: 100%; border-radius: 0; }
       .header { padding: 24px 20px 80px; }
     }
+    :root {
+  color-scheme: light;
+}
   </style>
 </head>
 <body>
@@ -498,6 +492,7 @@
       actualizarTasasUI();
       setInterval(() => actualizarTasasUI(), 60_000);
     });
+    
   </script>
 </body>
 </html>
