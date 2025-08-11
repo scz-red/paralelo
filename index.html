@@ -2,226 +2,205 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="preconnect" href="https://api.lupo.lat" crossorigin>
-  <link rel="dns-prefetch" href="//currencyfreaks.com">
+<!-- Conexiones -->
+<link rel="preconnect" href="https://api.lupo.lat" crossorigin>
+<link rel="dns-prefetch" href="//currencyfreaks.com">
 
-  <!-- SEO Básico -->
-  <title>Calculadora al Paralelo - Convierte BOB a monedas fiat y cripto</title>
-  <meta name="description" content="Convierte Bolivianos (BOB) a monedas fiat y cripto en tiempo real. Tasas de referencia USD y EUR. Calculadora al paralelo.">
-  <meta name="author" content="Paralelo.scz.red">
+<!-- SEO -->
+<title>Calculadora al Paralelo — BOB a fiat y cripto</title>
+<meta name="description" content="Convierte Bolivianos (BOB) a monedas fiat y criptomonedas en tiempo real con tipo de cambio paralelo.">
 
-  <!-- Para Google / motores de búsqueda -->
-  <link rel="canonical" href="https://paralelo.scz.red/">
+<link rel="canonical" href="https://paralelo.scz.red/">
 
-  <!-- Open Graph (para Facebook, WhatsApp, etc.) -->
-  <meta property="og:locale" content="es_LA">
-  <meta property="og:title" content="Calculadora al Paralelo - Convierte BOB a monedas fiat y cripto">
-  <meta property="og:description" content="Convierte Bolivianos a monedas fiat y criptomonedas con precios en tiempo real.">
-  <meta property="og:image" content="https://paralelo.scz.red/icons/banner.png">
-  <meta property="og:url" content="https://paralelo.scz.red/">
-  <meta property="og:type" content="website">
+<!-- Open Graph -->
+<meta property="og:locale" content="es_LA">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Calculadora al Paralelo — BOB a fiat y cripto">
+<meta property="og:description" content="Convierte BOB a monedas fiat y criptomonedas en tiempo real.">
+<meta property="og:image" content="https://paralelo.scz.red/icons/banner.png">
+<meta property="og:url" content="https://paralelo.scz.red/">
 
-  <!-- Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Calculadora al Paralelo - Convierte BOB a monedas fiat y cripto">
-  <meta name="twitter:description" content="Convierte Bolivianos a monedas fiat y criptomonedas en tiempo real.">
-  <meta name="twitter:image" content="https://paralelo.scz.red/icons/banner.png">
+<!-- PWA -->
+<meta name="theme-color" content="#0f172a">
+<link rel="manifest" href="./manifest.json">
 
+<!-- Icons -->
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/icon-192x192.png">
 
-  <!-- Iconos / Favicon -->
-  <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192x192.png" />
-  <link rel="apple-touch-icon" href="./icons/icon-192x192.png" />
+<style>
+  :root{
+    --bg: #0b1220;          /* fondo profundo */
+    --bg-soft:#0f172a;      /* tarjetas */
+    --fg: #e5e7eb;          /* texto */
+    --muted:#93a2b8;        /* texto suave */
+    --brand:#60a5fa;        /* acento */
+    --brand-strong:#3b82f6; /* acento fuerte */
+    --stroke:rgba(255,255,255,.08);
+    --shadow: 0 10px 28px rgba(0,0,0,.35);
+  }
 
-  <!-- PWA -->
-  <meta name="theme-color" content="#0f172a" />
-  <link rel="manifest" href="./manifest.json" />
+  /* Reset mínimo */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
+    background:
+      radial-gradient(1200px 800px at 15% -10%, rgba(59,130,246,.12), transparent 60%),
+      radial-gradient(1200px 800px at 110% 10%, rgba(16,185,129,.10), transparent 60%),
+      var(--bg);
+    color:var(--fg);
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  .visually-hidden{position:absolute!important;width:1px;height:1px;border:0;padding:0;margin:-1px;clip:rect(0 0 0 0);overflow:hidden;white-space:nowrap}
 
-  <style>
-    :root {
-      /* Paleta minimalista clara */
-      --accent: #3b82f6;
-      --accent-dark: #1e40af;
-      --background: #f7f7f8;
-      --card: #ffffff;
-      --text: #1f2937;
-      --text-light: #6b7280;
-      --border: rgba(0, 0, 0, 0.08);
-      --shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
-      --glass: rgba(59, 130, 246, 0.06);
-      color-scheme: light; /* fuerza modo claro */
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1200px 1200px at 10% -10%, var(--glass), transparent 60%), var(--background);
-      color: var(--text);
-    }
-    .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .container{max-width:940px;margin:28px auto 96px;padding:0 16px}
 
-    .app-container { max-width: 920px; margin: 24px auto 80px; padding: 0 16px; }
-    .header {
-      display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
-      padding: 14px 16px; background: var(--card);
-      border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border);
-    }
-    .brand { display: flex; align-items: center; gap: 10px; }
-    .brand-logo { height: 40px; width: auto; display: block; }
-    .header p { color: var(--text-light); font-size: .95rem; }
+  /* Header minimal */
+  .header{
+    display:flex;align-items:center;gap:14px;
+    background:linear-gradient(0deg, rgba(255,255,255,.02), rgba(255,255,255,.02)), var(--bg-soft);
+    border:1px solid var(--stroke);
+    border-radius:16px;padding:14px 16px; box-shadow:var(--shadow);
+  }
+  .brand-logo{width:34px;height:34px;object-fit:contain;border-radius:8px}
+  .header .title{font-weight:700;letter-spacing:.2px}
+  .header .subtitle{margin-left:auto;font-size:.9rem;color:var(--muted)}
 
-    .input-container {
-      position: sticky; top: 0; z-index: 10;
-      background: linear-gradient(180deg, rgba(247,247,248,1) 0%, rgba(247,247,248,.8) 60%, rgba(247,247,248,0) 100%);
-      padding: 12px 0 4px; margin-bottom: 8px;
-    }
-    .panel {
-      background: var(--card); border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border);
-      padding: 16px;
-    }
+  /* Input panel sticky */
+  .stick{position:sticky;top:0;z-index:10;padding-top:12px;margin-top:12px;background:linear-gradient(180deg, rgba(11,18,32,1) 0%, rgba(11,18,32,.85) 55%, rgba(11,18,32,0) 100%)}
 
-    .flags { display: flex; align-items: center; gap: 8px; }
-    .flags img { width: 20px; height: 14px; object-fit: cover; border-radius: 2px; border: 1px solid var(--border); }
+  .panel{
+    background:linear-gradient(0deg, rgba(255,255,255,.02), rgba(255,255,255,.02)), var(--bg-soft);
+    border:1px solid var(--stroke); border-radius:16px; padding:16px; box-shadow:var(--shadow);
+  }
 
-    .input-group { position: relative; margin-bottom: 16px; }
-    .input-group label { display: block; font-size: 0.84rem; font-weight: 600; margin-bottom: 8px; color: var(--text-light); }
-    .input-group input {
-      width: 100%; padding: 16px 52px 16px 16px; font-size: 1.05rem; border-radius: 14px;
-      border: 1px solid var(--border); background: #fff; color: var(--text); font-weight: 600; transition: box-shadow .2s, transform .15s;
-    }
-    .input-group input:focus {
-      outline: none; border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(59,130,246,0.18);
-      transform: translateY(-1px);
-    }
-    .input-help { margin-top: 6px; font-size: .78rem; color: var(--text-light); }
-    .input-error { display: none; margin-top: 6px; font-size: .82rem; color: #b91c1c; font-weight: 600; }
-    .input-group.invalid input { border-color: #ef4444; box-shadow: 0 0 0 4px rgba(239,68,68,0.18); }
-    .input-group.invalid .input-error { display: block; }
+  .group{position:relative}
+  .group label{display:block;color:var(--muted);font-size:.86rem;font-weight:600;margin-bottom:8px}
+  .input{
+    width:100%;padding:16px 110px 16px 16px;border-radius:14px;
+    border:1px solid var(--stroke);background:#0b1220;color:#fff;font-weight:700;font-size:1.06rem;
+    outline:none;transition:box-shadow .2s, border-color .2s, transform .15s;
+  }
+  .input:focus{border-color:rgba(96,165,250,.6); box-shadow:0 0 0 5px rgba(96,165,250,.18); transform:translateY(-1px)}
 
-    .currency-selector {
-      position: absolute; right: 12px; top: 34px; display: inline-flex; align-items: center; gap: 6px;
-      padding: 6px 10px; background: #f1f5f9; border: 1px solid var(--border); border-radius: 12px; color: #334155; font-weight: 700;
-    }
-    .currency-selector img { width: 20px; height: 14px; object-fit: cover; border-radius: 4px; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.16); }
+  .chip{
+    position:absolute;right:10px;top:38px;display:flex;align-items:center;gap:8px;
+    padding:8px 12px;background:#0b1326;border:1px solid var(--stroke);border-radius:12px;font-weight:800;
+    color:#cde3ff;
+  }
+  .chip img{width:20px;height:14px;border-radius:3px;border:1px solid var(--stroke);object-fit:cover}
 
-    /* Tasas */
-    .tasas-referencia { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
-    .tasa-item { background: var(--card); border-radius: 14px; padding: 12px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
-    .tasa-monedas { font-size: .86rem; color: var(--text-light); }
-    .tasa-valor { font-size: 1.2rem; font-weight: 800; color: var(--accent-dark); }
+  /* Reference rates */
+  .rates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .rate{border:1px solid var(--stroke);border-radius:14px;padding:12px;text-align:center;background:#0b1326}
+  .rate .k{font-size:.82rem;color:var(--muted)}
+  .rate .v{margin-top:2px;font-weight:900;color:#a7d0ff;font-size:1.14rem}
 
-    .results {
-      margin-top: 16px; background: rgba(255,255,255,.66);
-      border-radius: 24px 24px 0 0;
-      backdrop-filter: blur(14px) saturate(140%);
-      -webkit-backdrop-filter: blur(14px) saturate(140%);
-      border: 1px solid var(--border);
-    }
+  /* Sections */
+  .section{margin-top:16px;border:1px solid var(--stroke);border-radius:18px;background:linear-gradient(0deg, rgba(255,255,255,.02), rgba(255,255,255,.02)), var(--bg-soft)}
+  .section .head{display:flex;align-items:center;gap:8px;padding:12px 14px;font-weight:800;color:#b3c5e7;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--stroke)}
+  .list{list-style:none;display:grid;grid-template-columns:1fr;gap:8px;padding:10px}
+  @media (min-width:560px){.list{grid-template-columns:1fr 1fr}}
+  @media (min-width:900px){.list{grid-template-columns:1fr 1fr 1fr}}
+  .item{
+    display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;
+    padding:12px;border:1px solid var(--stroke);border-radius:14px;background:#0b1326
+  }
+  .icon img{width:34px;height:34px;border-radius:8px;border:1px solid var(--stroke);object-fit:cover;display:block}
+  .name{font-weight:700}
+  .code{font-size:.82rem;color:var(--muted)}
+  .value{font-weight:900;color:#e8f0ff}
 
-    .section-title { display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: var(--text-light); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
-    .section-title i { opacity: .7; }
+  /* Loader minimal (CSS) */
+  .loading{display:flex;align-items:center;gap:10px;padding:12px 14px;color:var(--muted);font-weight:700}
+  .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.12);border-top-color:#e5e7eb;border-radius:50%;animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
 
-    .currency-list { list-style: none; padding: 8px 8px 6px; display: grid; grid-template-columns: 1fr; gap: 8px; }
-    @media (min-width: 540px) { .currency-list { grid-template-columns: 1fr 1fr; } }
-    @media (min-width: 860px) { .currency-list { grid-template-columns: 1fr 1fr 1fr; } }
-
-    .currency-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding: 10px 10px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); box-shadow: var(--shadow); }
-    .currency-icon img { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover; display: block; }
-    .currency-name { font-weight: 700; color: var(--text); }
-    .currency-code { font-size: .82rem; color: var(--text-light); }
-    .currency-value { font-weight: 800; font-size: 1.02rem; color: var(--accent-dark); }
-
-    .loading { display: flex; align-items: center; gap: 8px; color: var(--text-light); font-weight: 600; padding: 12px 16px; }
-  </style>
+  .help{margin-top:8px;color:var(--muted);font-size:.82rem}
+  .error{display:none;margin-top:8px;color:#fda4af;font-weight:700}
+  .invalid .input{border-color:#ef4444;box-shadow:0 0 0 5px rgba(239,68,68,.18)}
+  .invalid .error{display:block}
+</style>
 </head>
 
 <body>
 <noscript>Esta calculadora requiere JavaScript para funcionar.</noscript>
-<div class="app-container">
-  <div class="header" role="banner">
-    <h1 class="visually-hidden">Calculadora al paralelo BOB → fiat/cripto</h1>
-    <div class="brand" aria-label="Paralelo">
-      <img src="./icons/banner.png" alt="Paralelo" class="brand-logo" decoding="async">
-      <span class="visually-hidden">Paralelo Bs</span>
-    </div>
-    <p>Convierte Bs. a diferente tipo de cambio Paralelo</p>
-  </div>
+<div class="container">
 
-  <main role="main">
-    <div class="input-container">
-      <div class="input-group" id="group-monto">
-        <label for="monto">Monto a convertir</label>
-        <input type="text" id="monto" value="1000" inputmode="decimal" placeholder="Ingresa monto en BOB" aria-describedby="montoHelp montoError" aria-invalid="false" />
-        <span class="currency-selector" aria-hidden="true">
-          <img src="paralelo/bandera-bolivia.png" alt="Bolivia">
-          <strong>BOB</strong>
-        </span>
-        <div id="montoHelp" class="input-help">Monto en bolivianos .</div>
-        <div id="montoError" class="input-error">Ingrese un monto válido .</div>
-      </div>
+  <header class="header" role="banner">
+    <h1 class="visually-hidden">Calculadora al Paralelo — Convierte BOB a fiat y cripto</h1>
+    <img class="brand-logo" src="https://paralelo.scz.red/icons/banner.png" alt="Paralelo logo" width="34" height="34" decoding="async">
+    <div class="title">Paralelo Bs.</div>
+    <div class="subtitle">Convierte Bs. a tipo de cambio paralelo</div>
+  </header>
 
-      <div class="tasas-referencia" aria-label="Tasas de referencia">
-        <div class="tasa-item" aria-live="polite" role="status">
-          <div class="tasa-monedas">USD/BOB</div>
-          <div class="tasa-valor" id="tasa-usd">--</div>
+  <main>
+    <div class="stick">
+      <div class="panel">
+        <div class="group" id="group-monto">
+          <label for="monto">Monto a convertir</label>
+          <input class="input" id="monto" type="text" inputmode="decimal" placeholder="Ingresa monto en BOB" value="1000" aria-describedby="montoHelp montoError" aria-invalid="false">
+          <span class="chip" aria-hidden="true">
+            <img src="paralelo/bandera-bolivia.png" alt="Bolivia" width="20" height="14">
+            BOB
+          </span>
+          <div id="montoHelp" class="help">En bolivianos (BOB).</div>
+          <div id="montoError" class="error">Ingrese un monto válido.</div>
         </div>
-        <div class="tasa-item" aria-live="polite" role="status">
-          <div class="tasa-monedas">EUR/BOB</div>
-          <div class="tasa-valor" id="tasa-eur">--</div>
-        </div>
-      </div>
-    </div>
 
-    <div class="results" aria-live="polite" aria-atomic="true">
-      <div class="section-title">
-        <i class="fas fa-money-bill-wave"></i>
-        <span>Monedas tradicionales</span>
-      </div>
-      <ul class="currency-list" id="fiat-list"></ul>
-
-      <div class="section-title">
-        <i class="fas fa-coins"></i>
-        <span>Criptomonedas</span>
-      </div>
-      <ul class="currency-list" id="crypto-list"></ul>
-
-      <div id="loader-global" style="display:none;" role="status" aria-live="polite">
-        <div class="loading">
-          <i class="fas fa-spinner fa-spin"></i>
-          Calculando tasas...
+        <div class="rates" aria-label="Tasas de referencia">
+          <div class="rate" aria-live="polite" role="status">
+            <div class="k">USD por 1</div>
+            <div class="v" id="tasa-usd">--</div>
+          </div>
+          <div class="rate" aria-live="polite" role="status">
+            <div class="k">EUR por 1</div>
+            <div class="v" id="tasa-eur">--</div>
+          </div>
         </div>
       </div>
     </div>
+
+    <section class="section" aria-live="polite" aria-atomic="true">
+      <div class="head">Monedas tradicionales</div>
+      <ul class="list" id="fiat-list"></ul>
+    </section>
+
+    <section class="section" style="margin-top:12px" aria-live="polite" aria-atomic="true">
+      <div class="head">Criptomonedas</div>
+      <ul class="list" id="crypto-list"></ul>
+
+      <div id="loader-global" style="display:none">
+        <div class="loading"><span class="spinner"></span>Calculando tasas…</div>
+      </div>
+    </section>
   </main>
 
-  <!-- Registro del Service Worker -->
+  <!-- SW -->
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      });
+      addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(()=>{}); });
     }
   </script>
 
+  <!-- App -->
   <script>
-    // ====== Configuración ======
+    // ===== Config =====
     const fiatCurrencies = {
-      "Dólar estadounidense": { code: "USD", icon: "https://currencyfreaks.com/photos/flags/usd.png" },
-      "Euro": { code: "EUR", icon: "https://currencyfreaks.com/photos/flags/eur.png" },
-      "Peso colombiano": { code: "COP", icon: "https://currencyfreaks.com/photos/flags/cop.png" },
-      "Peso argentino": { code: "ARS", icon: "https://currencyfreaks.com/photos/flags/ars.png" },
-      "Peso chileno": { code: "CLP", icon: "https://currencyfreaks.com/photos/flags/clp.png" },
-      "Real brasileño": { code: "BRL", icon: "https://currencyfreaks.com/photos/flags/brl.png" },
-      "Sol peruano": { code: "PEN", icon: "https://currencyfreaks.com/photos/flags/pen.png" },
-      "Yuan chino": { code: "CNY", icon: "https://currencyfreaks.com/photos/flags/cny.png" },
-      "Guaraní paraguayo": { code: "PYG", icon: "https://currencyfreaks.com/photos/flags/pyg.png" },
-      "Peso mexicano": { code: "MXN", icon: "https://currencyfreaks.com/photos/flags/mxn.png" }
+      "Dólar estadounidense": { code: "USD", icon: "https://currencyfreaks.com/photos/flags/usd.png", decimals: 2 },
+      "Euro": { code: "EUR", icon: "https://currencyfreaks.com/photos/flags/eur.png", decimals: 2 },
+      "Peso colombiano": { code: "COP", icon: "https://currencyfreaks.com/photos/flags/cop.png", decimals: 0 },
+      "Peso argentino": { code: "ARS", icon: "https://currencyfreaks.com/photos/flags/ars.png", decimals: 0 },
+      "Peso chileno": { code: "CLP", icon: "https://currencyfreaks.com/photos/flags/clp.png", decimals: 0 },
+      "Real brasileño": { code: "BRL", icon: "https://currencyfreaks.com/photos/flags/brl.png", decimals: 2 },
+      "Sol peruano": { code: "PEN", icon: "https://currencyfreaks.com/photos/flags/pen.png", decimals: 2 },
+      "Yuan chino": { code: "CNY", icon: "https://currencyfreaks.com/photos/flags/cny.png", decimals: 2 },
+      "Guaraní paraguayo": { code: "PYG", icon: "https://currencyfreaks.com/photos/flags/pyg.png", decimals: 0 },
+      "Peso mexicano": { code: "MXN", icon: "https://currencyfreaks.com/photos/flags/mxn.png", decimals: 2 }
     };
 
     const cryptoCurrencies = [
@@ -235,6 +214,7 @@
       { name: 'Trump', code: 'TRUMP', icon: 'https://paralelo.scz.red/paralelo/8.png' }
     ];
 
+    // ===== DOM =====
     const montoInput = document.getElementById('monto');
     const groupMonto  = document.getElementById('group-monto');
     const fiatList = document.getElementById('fiat-list');
@@ -243,214 +223,171 @@
     const tasaUSD = document.getElementById('tasa-usd');
     const tasaEUR = document.getElementById('tasa-eur');
 
-    // Cache en memoria (por monto)
-    const memCache = {};
+    // ===== Helpers =====
     const store = {
       get: (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
       set: (k,v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
     };
 
-    function createEl(tag, opts = {}, children = []) {
+    function createEl(tag, attrs = {}, children = []) {
       const el = document.createElement(tag);
-      for (const [k, v] of Object.entries(opts)) {
+      Object.entries(attrs).forEach(([k,v])=>{
         if (k === 'text') el.textContent = v;
         else if (k === 'class') el.className = v;
         else if (k === 'html') el.innerHTML = v;
         else el.setAttribute(k, v);
-      }
-      if (Array.isArray(children) && children.length) el.append(...children);
+      });
+      if (children.length) el.append(...children);
       return el;
     }
 
-    function formatNumber(v) {
-      const num = typeof v === 'number' ? v : Number(v);
+    function formatByCode(code, value) {
+      const num = Number(value);
       if (!isFinite(num)) return '--';
-      return new Intl.NumberFormat('es-BO', { maximumFractionDigits: 2 }).format(num);
-    }
-
-    function clearResults() {
-      fiatList.replaceChildren();
-      cryptoList.replaceChildren();
-    }
-
-    function showGlobalLoader(show = true) {
-      loaderGlobal.style.display = show ? 'block' : 'none';
-      if (show) { clearResults(); }
+      const opts = { maximumFractionDigits: 2 };
+      if (['COP','CLP','PYG','ARS'].includes(code)) opts.maximumFractionDigits = 0;
+      return new Intl.NumberFormat('es-BO', opts).format(num);
     }
 
     function validarMontoStr(str) {
       if (!str) return false;
-      const clean = str.replace(/[^\d.,]/g, '');
-      const points = (clean.match(/[.,]/g) || []).length;
-      if (points > 1) return false;
-      const normalized = clean.replace(',', '.');
-      const n = Number(normalized);
+      const clean = str.replace(/[^\d.,]/g,'');
+      const pts = (clean.match(/[.,]/g) || []).length;
+      if (pts > 1) return false;
+      const n = Number(clean.replace(',', '.'));
       return isFinite(n) && n > 0;
     }
 
-    function setMontoValidity(isValid) {
-      groupMonto.classList.toggle('invalid', !isValid);
-      document.getElementById('montoError').style.display = isValid ? 'none' : 'block';
+    function setMontoValidity(ok) {
+      groupMonto.classList.toggle('invalid', !ok);
+      document.getElementById('montoError').style.display = ok ? 'none' : 'block';
     }
 
-    async function actualizarTasasUI() {
-      try {
-        const res = await fetch('https://api.lupo.lat/tasas_referencia');
-        if (!res.ok) throw new Error('No se pudo obtener tasas');
-        const json = await res.json();
-        const usd = json?.tasas?.USD_BOB ?? json?.USD_BOB ?? null;
-        const eur = json?.tasas?.EUR_BOB ?? json?.EUR_BOB ?? null;
-        tasaUSD.textContent = usd ? formatNumber(usd) : '--';
-        tasaEUR.textContent = eur ? formatNumber(eur) : '--';
-      } catch {
-        tasaUSD.textContent = 'Error'; tasaEUR.textContent = 'Error';
-      }
+    function clearResults() { fiatList.replaceChildren(); cryptoList.replaceChildren(); }
+    function showLoader(s=true){ loaderGlobal.style.display = s? 'block':'none'; if(s) clearResults(); }
+    const offline = () => !navigator.onLine;
+
+    function actualizarTasasUI(fiat, monto) {
+      // extrae USD/EUR desde el objeto fiat (valores = cuánto recibe por el monto dado)
+      const get = (obj, keys) => {
+        for (const k of keys) if (obj?.[k] != null && !isNaN(Number(obj[k]))) return Number(obj[k]);
+        return null;
+      };
+      const usd = get(fiat, ['Dólar estadounidense','USD','Usd']);
+      const eur = get(fiat, ['Euro','EUR','Eur']);
+      tasaUSD.textContent = usd ? (monto / usd).toFixed(2) : '--';
+      tasaEUR.textContent = eur ? (monto / eur).toFixed(2) : '--';
     }
 
-    async function calcular(force=false) {
-      const raw = montoInput.value;
-      const isValid = validarMontoStr(raw);
-      setMontoValidity(isValid);
-      if (!isValid) { clearResults(); actualizarTasasUI(); return; }
-
-      const clean = raw.replace(/[^\d.,]/g, '').replace(',', '.');
-      const monto = Number(clean);
-      const storeKey = `conv_${monto}`;
-
-      // cache localStorage (1 min)
-      const cached = store.get(storeKey);
-      if (!force && cached) {
-        renderCurrencyList(fiatList, cached.fiat, fiatCurrencies, false);
-        renderCurrencyList(cryptoList, cached.crypto, cryptoCurrencies, true);
-        actualizarTasasUI();
-        memCache[monto] = { ...cached, t: Date.now() };
-        return;
-      }
-
-      if (offline()) {
-        clearResults(); showGlobalLoader(false);
-        tasaUSD.textContent = 'Sin conexión'; tasaEUR.textContent = 'Sin conexión';
-        fiatList.appendChild(createEl('div', { class: 'loading', text: 'Sin conexión' }));
-        return;
-      }
-
-      showGlobalLoader(true);
-      try {
-        const res = await fetch(`https://api.lupo.lat/convertir_bob?monto_bob=${encodeURIComponent(monto)}`);
-        if (!res.ok) throw new Error(`Error API: ${res.status}`);
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-
-        const fiat = data.conversiones_fiat || {}; const crypto = data.conversiones_cripto || {};
-        showGlobalLoader(false);
-        renderCurrencyList(fiatList, fiat, fiatCurrencies, false);
-        renderCurrencyList(cryptoList, crypto, cryptoCurrencies, true);
-        actualizarTasasUI();
-
-        const payload = { fiat, crypto };
-        memCache[monto] = { ...payload, t: Date.now() };
-        store.set(storeKey, payload);
-      } catch (e) {
-        showGlobalLoader(false);
-        clearResults();
-        fiatList.appendChild(createEl('div', { class: 'loading', text: 'Error al calcular' }));
-        tasaUSD.textContent = 'Error';
-        tasaEUR.textContent = 'Error';
-      }
-    }
-
-    function offline() { return !navigator.onLine; }
-
-    function renderCurrencyList(listElement, data, dictionary, isCrypto = false) {
-      listElement.replaceChildren();
-
+    function renderList(listEl, data, dict, asCrypto=false){
+      listEl.replaceChildren();
       if (!data || Object.keys(data).length === 0) {
-        const empty = createEl('div', { class: 'loading' }, [
-          createEl('i', { class: 'fas fa-circle-info' }),
-          createEl('span', { text: 'Sin datos disponibles' })
-        ]);
-        listElement.appendChild(empty);
+        listEl.appendChild(createEl('div',{class:'loading'},[
+          createEl('span',{class:'spinner'})
+        ]));
         return;
       }
 
       if (Array.isArray(data)) {
-        data.forEach(item => {
-          const [name, code, value, iconUrl] = item;
-          const li = createEl('li', { class: 'currency-item', role: 'listitem' });
-          const icon = createEl('div', { class: 'currency-icon' }, [
-            Object.assign(new Image(), { src: iconUrl, alt: name })
+        data.forEach(([name, code, value, iconUrl])=>{
+          const li = createEl('li',{class:'item',role:'listitem'});
+          const icon = createEl('div',{class:'icon'},[
+            Object.assign(new Image(),{src:iconUrl,alt:name,width:34,height:34,referrerPolicy:'no-referrer'})
           ]);
-          const details = createEl('div', { class: 'currency-details' }, [
-            createEl('div', { class: 'currency-name', text: name }),
-            createEl('div', { class: 'currency-code', text: code })
+          const details = createEl('div',{},[
+            createEl('div',{class:'name',text:name}),
+            createEl('div',{class:'code',text:code})
           ]);
-          const right = createEl('div', { class: 'currency-right' }, [
-            createEl('div', { class: 'currency-value', text: formatNumber(value) })
+          const right = createEl('div',{},[
+            createEl('div',{class:'value',text:formatByCode(code, value)})
           ]);
-          li.append(icon, details, right);
-          listElement.appendChild(li);
+          li.append(icon,details,right); listEl.appendChild(li);
         });
         return;
       }
 
-      for (const [name, value] of Object.entries(data)) {
-        const info = dictionary[name] || { code: name.slice(0, 3).toUpperCase(), icon: `https://via.placeholder.com/40/3b82f6/ffffff?text=${name.slice(0,2)}` };
-
-        const li = createEl('li', { class: 'currency-item', role: 'listitem' });
-        const icon = createEl('div', { class: 'currency-icon' }, [
-          Object.assign(new Image(), { src: info.icon, alt: name || info.code || '', referrerPolicy: 'no-referrer' })
+      for (const [name,value] of Object.entries(data)){
+        const info = dict[name] || { code: name.slice(0,3).toUpperCase(), icon: `https://via.placeholder.com/34x34/0f172a/ffffff?text=${name.slice(0,2)}` };
+        const li = createEl('li',{class:'item',role:'listitem'});
+        const icon = createEl('div',{class:'icon'},[
+          Object.assign(new Image(),{src:info.icon,alt:name,width:34,height:34,referrerPolicy:'no-referrer'})
         ]);
-
-        const details = createEl('div', { class: 'currency-details' }, [
-          createEl('div', { class: 'currency-name', text: name }),
-          createEl('div', { class: 'currency-code', text: info.code })
+        const details = createEl('div',{},[
+          createEl('div',{class:'name',text:name}),
+          createEl('div',{class:'code',text:info.code})
         ]);
-
-        const right = createEl('div', { class: 'currency-right' }, [
-          createEl('div', { class: 'currency-value', text: formatNumber(value) })
+        const right = createEl('div',{},[
+          createEl('div',{class:'value',text:formatByCode(info.code, value)})
         ]);
-
-        li.append(icon, details, right);
-        listElement.appendChild(li);
+        li.append(icon,details,right); listEl.appendChild(li);
       }
     }
 
-    function preloadCryptoImages() {
-      cryptoCurrencies.forEach(crypto => { const img = new Image(); img.src = crypto.icon; });
+    async function calcular(force=false){
+      const raw = montoInput.value;
+      const ok = validarMontoStr(raw);
+      setMontoValidity(ok);
+      if(!ok){ clearResults(); tasaUSD.textContent='--'; tasaEUR.textContent='--'; return; }
+
+      const monto = Number(raw.replace(/[^\d.,]/g,'').replace(',', '.'));
+      const key = `conv_${monto}`;
+      if(!force){
+        const cached = store.get(key);
+        if(cached){
+          renderList(fiatList, cached.fiat, fiatCurrencies, false);
+          renderList(cryptoList, cached.crypto, cryptoCurrencies, true);
+          actualizarTasasUI(cached.fiat, monto);
+          return;
+        }
+      }
+
+      if (offline()){
+        clearResults(); showLoader(false);
+        fiatList.appendChild(createEl('div',{class:'loading'},[createEl('span',{class:'spinner'}), createEl('span',{text:'Sin conexión'})]));
+        tasaUSD.textContent='--'; tasaEUR.textContent='--';
+        return;
+      }
+
+      showLoader(true);
+      try{
+        const res = await fetch(`https://api.lupo.lat/convertir_bob?monto_bob=${encodeURIComponent(monto)}`);
+        if(!res.ok) throw new Error('API');
+        const data = await res.json();
+        const fiat = data.conversiones_fiat || {};
+        const crypto = data.conversiones_cripto || {};
+        showLoader(false);
+        renderList(fiatList, fiat, fiatCurrencies, false);
+        renderList(cryptoList, crypto, cryptoCurrencies, true);
+        actualizarTasasUI(fiat, monto);
+        store.set(key, {fiat, crypto});
+      }catch(e){
+        showLoader(false); clearResults();
+        fiatList.appendChild(createEl('div',{class:'loading'},[createEl('span',{class:'spinner'}), createEl('span',{text:'Error al calcular'})]));
+        tasaUSD.textContent='--'; tasaEUR.textContent='--';
+      }
     }
 
     // Eventos
-    let debounce;
-    montoInput.addEventListener('input', () => {
-      clearTimeout(debounce);
-      debounce = setTimeout(() => calcular(), 500);
+    let t; montoInput.addEventListener('input', ()=>{ clearTimeout(t); t=setTimeout(()=>calcular(), 350); });
+    montoInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); calcular(true);} });
+    montoInput.addEventListener('keypress', (e)=>{
+      const ch = String.fromCharCode(e.which);
+      if(!/[0-9.,]/.test(ch)) e.preventDefault();
+      if((ch==='.'||ch===',') && (montoInput.value.includes('.') || montoInput.value.includes(','))) e.preventDefault();
     });
-    // Enter = calcular ahora
-    montoInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); calcular(true); }});
-    // Validación de caracteres
-    montoInput.addEventListener('keypress', (e) => {
-      const char = String.fromCharCode(e.which);
-      if (!/[0-9.,]/.test(char)) e.preventDefault();
-      if ((char === '.' || char === ',') && (montoInput.value.includes('.') || montoInput.value.includes(','))) e.preventDefault();
+    montoInput.addEventListener('paste', (e)=>{
+      const v=(e.clipboardData||window.clipboardData).getData('text');
+      if(!/^[0-9]+([.,][0-9]{0,2})?$/.test(v.replace(/\s/g,''))) e.preventDefault();
     });
 
-    montoInput.addEventListener('paste', (e) => {
-      const value = (e.clipboardData || window.clipboardData).getData('text');
-      if (!/^[0-9]+([.,][0-9]{0,2})?$/.test(value.replace(/\s/g,''))) e.preventDefault();
-    });
+    addEventListener('online', ()=>{ calcular(true); });
+    addEventListener('offline', ()=>{ tasaUSD.textContent='--'; tasaEUR.textContent='--'; });
 
-    window.addEventListener('online', () => { calcular(true); actualizarTasasUI(); });
-    window.addEventListener('offline', () => {
-      tasaUSD.textContent = 'Sin conexión';
-      tasaEUR.textContent = 'Sin conexión';
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      preloadCryptoImages();
-      montoInput.focus();
-      calcular(true);
-      actualizarTasasUI();
-      setInterval(() => actualizarTasasUI(), 60_000);
+    document.addEventListener('DOMContentLoaded', ()=>{
+      // Preload crypto icons
+      cryptoCurrencies.forEach(c=>{ const i=new Image(); i.src=c.icon; });
+      montoInput.focus(); calcular(true);
+      setInterval(()=>calcular(true), 60_000);
     });
   </script>
 </div>
