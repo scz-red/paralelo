@@ -4,25 +4,28 @@
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link rel="preconnect" href="https://api.lupo.lat" crossorigin>
+  <link rel="dns-prefetch" href="//currencyfreaks.com">
+
   <!-- SEO Básico -->
   <title>Calculadora al Paralelo - Convierte BOB a monedas fiat y cripto</title>
-  <meta name="description" content="Convierte Bolivianos (BOB) a monedas fiat y criptomonedas en tiempo real. Calculadora al Paralelo con precios actualizados al instante.">
-  <meta name="keywords" content="paralelo, calculadora paralelo, dólar paralelo, cripto, boliviano, convertir BOB, tipo de cambio Bolivia, cambio paralelo">
+  <meta name="description" content="Convierte Bolivianos (BOB) a monedas fiat y cripto en tiempo real. Tasas de referencia USD y EUR. Calculadora al paralelo.">
   <meta name="author" content="Paralelo.scz.red">
 
   <!-- Para Google / motores de búsqueda -->
   <link rel="canonical" href="https://paralelo.scz.red/">
 
   <!-- Open Graph (para Facebook, WhatsApp, etc.) -->
+  <meta property="og:locale" content="es_LA">
   <meta property="og:title" content="Calculadora al Paralelo - Convierte BOB a monedas fiat y cripto">
   <meta property="og:description" content="Convierte Bolivianos a monedas fiat y criptomonedas con precios en tiempo real.">
   <meta property="og:image" content="https://paralelo.scz.red/icons/banner.png">
   <meta property="og:url" content="https://paralelo.scz.red/">
   <meta property="og:type" content="website">
 
-  <!-- Twitter Card -->
+  <!-- Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Calculadora al Paralelo">
+  <meta name="twitter:title" content="Calculadora al Paralelo - Convierte BOB a monedas fiat y cripto">
   <meta name="twitter:description" content="Convierte Bolivianos a monedas fiat y criptomonedas en tiempo real.">
   <meta name="twitter:image" content="https://paralelo.scz.red/icons/banner.png">
 
@@ -31,13 +34,13 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192x192.png" />
-  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/icon-192x192.png" />
 
   <!-- PWA -->
   <meta name="theme-color" content="#0f172a" />
   <link rel="manifest" href="./manifest.json" />
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <style>
     :root {
@@ -56,50 +59,35 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
     body {
-      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: var(--background);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 1200px at 10% -10%, var(--glass), transparent 60%), var(--background);
       color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      line-height: 1.55;
     }
-    .app-container {
-      width: 100%;
-      max-width: 420px;
-      min-height: 100vh;
-      background: var(--card);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    /* Header */
-    .header {
-      padding: 24px 20px 80px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-      color: #fff;
-      position: relative;
-    }
-    .header::after {
-      content: "";
-      position: absolute; inset-inline: 0; bottom: 0; height: 40px;
-      background: var(--card);
-      border-radius: 24px 24px 0 0;
-    }
-    .header h1 { font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
-    .header p { font-size: 0.95rem; opacity: 0.95; }
+    .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
-    /* Input */
-    .input-container {
-      padding: 24px 20px;
-      margin-top: -60px;
-      position: relative; z-index: 1;
-      background: var(--glass);
-      border-radius: 24px 24px 0 0;
-      backdrop-filter: blur(14px) saturate(140%);
-      -webkit-backdrop-filter: blur(14px) saturate(140%);
-      border: 1px solid var(--border);
+    .app-container { max-width: 920px; margin: 24px auto 80px; padding: 0 16px; }
+    .header {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
+      padding: 14px 16px; background: var(--card);
+      border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border);
     }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-logo { height: 40px; width: auto; display: block; }
+    .header p { color: var(--text-light); font-size: .95rem; }
+
+    .input-container {
+      position: sticky; top: 0; z-index: 10;
+      background: linear-gradient(180deg, rgba(247,247,248,1) 0%, rgba(247,247,248,.8) 60%, rgba(247,247,248,0) 100%);
+      padding: 12px 0 4px; margin-bottom: 8px;
+    }
+    .panel {
+      background: var(--card); border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border);
+      padding: 16px;
+    }
+
+    .flags { display: flex; align-items: center; gap: 8px; }
+    .flags img { width: 20px; height: 14px; object-fit: cover; border-radius: 2px; border: 1px solid var(--border); }
+
     .input-group { position: relative; margin-bottom: 16px; }
     .input-group label { display: block; font-size: 0.84rem; font-weight: 600; margin-bottom: 8px; color: var(--text-light); }
     .input-group input {
@@ -111,91 +99,79 @@
       box-shadow: 0 0 0 4px rgba(59,130,246,0.18);
       transform: translateY(-1px);
     }
-    .input-help { margin-top: 6px; font-size: 0.8rem; color: var(--text-light); }
-    .input-error { margin-top: 6px; font-size: 0.82rem; color: #ef4444; display: none; }
-    .input-group.invalid input { border-color: #ef4444; box-shadow: 0 0 0 4px rgba(239,68,68,0.15); }
+    .input-help { margin-top: 6px; font-size: .78rem; color: var(--text-light); }
+    .input-error { display: none; margin-top: 6px; font-size: .82rem; color: #b91c1c; font-weight: 600; }
+    .input-group.invalid input { border-color: #ef4444; box-shadow: 0 0 0 4px rgba(239,68,68,0.18); }
     .input-group.invalid .input-error { display: block; }
-    .currency-selector { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; height: 100%; }
-    .currency-selector img { width: 32px; height: 22px; object-fit: cover; border-radius: 4px; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.16); }
+
+    .currency-selector {
+      position: absolute; right: 12px; top: 34px; display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 10px; background: #f1f5f9; border: 1px solid var(--border); border-radius: 12px; color: #334155; font-weight: 700;
+    }
+    .currency-selector img { width: 20px; height: 14px; object-fit: cover; border-radius: 4px; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.16); }
 
     /* Tasas */
     .tasas-referencia { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
     .tasa-item { background: var(--card); border-radius: 14px; padding: 12px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
-    .tasa-monedas { font-size: 0.78rem; color: var(--text-light); margin-bottom: 4px; }
-    .tasa-valor { font-weight: 800; font-size: 1.05rem; color: var(--accent); letter-spacing: 0.02em; }
+    .tasa-monedas { font-size: .86rem; color: var(--text-light); }
+    .tasa-valor { font-size: 1.2rem; font-weight: 800; color: var(--accent-dark); }
 
-    /* Listas */
-    .results { padding: 0 20px 20px; }
-    .section-title { font-size: 0.95rem; font-weight: 700; margin: 22px 0 12px; color: var(--text-light); display: flex; align-items: center; gap: 10px; }
-    .section-title i { color: var(--accent); }
-    .currency-list { list-style: none; background: var(--card); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .currency-item { display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border); transition: transform .2s; animation: fadeIn .35s ease-out both; background: var(--card); }
-    .currency-item:last-child { border-bottom: none; }
-    .currency-item:hover { transform: translateY(-2px); }
-    .currency-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(59,130,246,0.10); display: grid; place-items: center; margin-right: 14px; overflow: hidden; flex-shrink: 0; }
-    .currency-icon img { width: 24px; height: 24px; object-fit: contain; transition: transform .2s; }
-    .currency-item:hover .currency-icon img { transform: scale(1.06); }
-    .currency-details { flex: 1; min-width: 0; }
-    .currency-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .currency-code { font-size: 0.75rem; color: var(--text-light); }
-    .currency-right { text-align: right; }
-    .currency-value { font-weight: 800; font-size: 1rem; letter-spacing: 0.01em; }
-    .currency-subvalue { font-size: 0.75rem; color: var(--text-light); margin-top: 2px; }
-    .loading { padding: 40px 20px; text-align: center; color: var(--text-light); font-size: 0.9rem; }
-    .loading i { font-size: 1.5rem; margin-bottom: 10px; color: var(--accent); display: block; }
-
-    @media (max-width: 480px) {
-      .app-container { min-height: 100vh; max-width: 100%; border-radius: 0; }
-      .header { padding: 24px 20px 80px; }
+    .results {
+      margin-top: 16px; background: rgba(255,255,255,.66);
+      border-radius: 24px 24px 0 0;
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      border: 1px solid var(--border);
     }
-    .brand {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* o center si lo quieres centrado */
-}
-.brand-logo {
-  height: clamp(50px, 8vw, 80px); /* responsive */
-  width: auto;
-  display: block;
-  image-rendering: -webkit-optimize-contrast; /* nitidez */
-}
 
-/* Accesibilidad: texto oculto para lectores de pantalla */
-.visually-hidden {
-  position: absolute !important;
-  width: 1px; height: 1px; padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
-}
+    .section-title { display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: var(--text-light); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+    .section-title i { opacity: .7; }
+
+    .currency-list { list-style: none; padding: 8px 8px 6px; display: grid; grid-template-columns: 1fr; gap: 8px; }
+    @media (min-width: 540px) { .currency-list { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 860px) { .currency-list { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .currency-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding: 10px 10px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); box-shadow: var(--shadow); }
+    .currency-icon img { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover; display: block; }
+    .currency-name { font-weight: 700; color: var(--text); }
+    .currency-code { font-size: .82rem; color: var(--text-light); }
+    .currency-value { font-weight: 800; font-size: 1.02rem; color: var(--accent-dark); }
+
+    .loading { display: flex; align-items: center; gap: 8px; color: var(--text-light); font-weight: 600; padding: 12px 16px; }
   </style>
 </head>
+
 <body>
+<noscript>Esta calculadora requiere JavaScript para funcionar.</noscript>
 <div class="app-container">
   <div class="header" role="banner">
+    <h1 class="visually-hidden">Calculadora al paralelo BOB → fiat/cripto</h1>
     <div class="brand" aria-label="Paralelo">
-      <img src="./icons/banner.png" alt="Paralelo" class="brand-logo">
+      <img src="./icons/banner.png" alt="Paralelo" class="brand-logo" decoding="async">
       <span class="visually-hidden">Paralelo Bs</span>
     </div>
     <p>Convierte Bs. a diferente tipo de cambio Paralelo</p>
   </div>
 
+  <main role="main">
     <div class="input-container">
       <div class="input-group" id="group-monto">
         <label for="monto">Monto a convertir</label>
-        <input type="text" id="monto" value="1000" placeholder="Ej: 1000" autofocus inputmode="decimal" aria-describedby="montoHelp montoError" aria-invalid="false" />
+        <input type="text" id="monto" value="1000" inputmode="decimal" placeholder="Ingresa monto en BOB" aria-describedby="montoHelp montoError" aria-invalid="false" />
         <span class="currency-selector" aria-hidden="true">
           <img src="paralelo/bandera-bolivia.png" alt="Bolivia">
+          <strong>BOB</strong>
         </span>
         <div id="montoHelp" class="input-help">Monto en bolivianos .</div>
         <div id="montoError" class="input-error">Ingrese un monto válido .</div>
       </div>
 
       <div class="tasas-referencia" aria-label="Tasas de referencia">
-        <div class="tasa-item" aria-live="polite">
+        <div class="tasa-item" aria-live="polite" role="status">
           <div class="tasa-monedas">USD/BOB</div>
           <div class="tasa-valor" id="tasa-usd">--</div>
         </div>
-        <div class="tasa-item" aria-live="polite">
+        <div class="tasa-item" aria-live="polite" role="status">
           <div class="tasa-monedas">EUR/BOB</div>
           <div class="tasa-valor" id="tasa-eur">--</div>
         </div>
@@ -218,11 +194,11 @@
       <div id="loader-global" style="display:none;" role="status" aria-live="polite">
         <div class="loading">
           <i class="fas fa-spinner fa-spin"></i>
-          Calculando tasas de cambio...
+          Calculando tasas...
         </div>
       </div>
     </div>
-  </div>
+  </main>
 
   <!-- Registro del Service Worker -->
   <script>
@@ -267,25 +243,30 @@
     const tasaUSD = document.getElementById('tasa-usd');
     const tasaEUR = document.getElementById('tasa-eur');
 
-    // Caches
-    let memCache = {}; // cache en memoria por monto
-    const CACHE_EXP = 60_000; // 1 min
-
-    // Helpers almacenamiento persistente
+    // Cache en memoria (por monto)
+    const memCache = {};
     const store = {
-      get(key) {
-        try {
-          const raw = localStorage.getItem(key);
-          if (!raw) return null;
-          const obj = JSON.parse(raw);
-          if (obj && obj.t && (Date.now() - obj.t) < CACHE_EXP) return obj.v;
-          return null;
-        } catch { return null; }
-      },
-      set(key, value) {
-        try { localStorage.setItem(key, JSON.stringify({ v: value, t: Date.now() })); } catch {}
-      }
+      get: (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+      set: (k,v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
     };
+
+    function createEl(tag, opts = {}, children = []) {
+      const el = document.createElement(tag);
+      for (const [k, v] of Object.entries(opts)) {
+        if (k === 'text') el.textContent = v;
+        else if (k === 'class') el.className = v;
+        else if (k === 'html') el.innerHTML = v;
+        else el.setAttribute(k, v);
+      }
+      if (Array.isArray(children) && children.length) el.append(...children);
+      return el;
+    }
+
+    function formatNumber(v) {
+      const num = typeof v === 'number' ? v : Number(v);
+      if (!isFinite(num)) return '--';
+      return new Intl.NumberFormat('es-BO', { maximumFractionDigits: 2 }).format(num);
+    }
 
     function clearResults() {
       fiatList.replaceChildren();
@@ -297,120 +278,30 @@
       if (show) { clearResults(); }
     }
 
-    function createEl(tag, opts = {}, children = []) {
-      const el = document.createElement(tag);
-      for (const [k, v] of Object.entries(opts)) {
-        if (k === 'class') el.className = v;
-        else if (k === 'text') el.textContent = v;
-        else if (k === 'html') el.innerHTML = v;
-        else el.setAttribute(k, v);
-      }
-      children.forEach(c => el.appendChild(c));
-      return el;
-    }
-
-    function renderCurrencyList(listElement, data, dictionary, isCrypto = false) {
-      listElement.replaceChildren();
-
-      if (isCrypto) {
-        cryptoCurrencies.forEach(crypto => {
-          const value = data[crypto.name] ?? data[crypto.code] ?? 0;
-
-          const li = createEl('li', { class: 'currency-item', role: 'listitem' });
-          const icon = createEl('div', { class: 'currency-icon' }, [
-            Object.assign(new Image(), { src: crypto.icon, alt: crypto.name, loading: 'lazy', onerror() { this.onerror = null; this.src = `https://cryptologos.cc/logos/${crypto.code.toLowerCase()}-${crypto.code.toLowerCase()}-logo.png`; } })
-          ]);
-
-          const details = createEl('div', { class: 'currency-details' }, [
-            createEl('div', { class: 'currency-name', text: crypto.name }),
-            createEl('div', { class: 'currency-code', text: crypto.code })
-          ]);
-
-          const right = createEl('div', { class: 'currency-right' }, [
-            createEl('div', { class: 'currency-value', text: formatNumber(value) })
-          ]);
-
-          li.append(icon, details, right);
-          listElement.appendChild(li);
-        });
-        return;
-      }
-
-      for (const [name, value] of Object.entries(data)) {
-        const info = dictionary[name] || { code: name.slice(0, 3).toUpperCase(), icon: `https://via.placeholder.com/40/3b82f6/ffffff?text=${name.slice(0,2)}` };
-
-        const li = createEl('li', { class: 'currency-item', role: 'listitem' });
-        const icon = createEl('div', { class: 'currency-icon' }, [
-          Object.assign(new Image(), { src: info.icon, alt: name, loading: 'lazy', onerror() { this.onerror = null; this.src = `https://via.placeholder.com/40/3b82f6/ffffff?text=${(info.code||'NA').slice(0,2)}`; } })
-        ]);
-
-        const details = createEl('div', { class: 'currency-details' }, [
-          createEl('div', { class: 'currency-name', text: name }),
-          createEl('div', { class: 'currency-code', text: info.code })
-        ]);
-
-        const right = createEl('div', { class: 'currency-right' }, [
-          createEl('div', { class: 'currency-value', text: formatNumber(value) })
-        ]);
-
-        li.append(icon, details, right);
-        listElement.appendChild(li);
-      }
-    }
-
-    function formatNumber(v) {
-      const num = typeof v === 'number' ? v : Number(v);
-      if (!Number.isFinite(num)) return '--';
-      return num.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-
     function validarMontoStr(str) {
       if (!str) return false;
-      const cleaned = str.replace(/,/g, '.').trim();
-      const num = Number(cleaned);
-      if (!Number.isFinite(num) || num <= 0) return false;
-      const parts = cleaned.split('.');
-      if (parts[1] && parts[1].length > 2) return false;
-      if (cleaned.replace('.', '').length > 10) return false;
-      return true;
+      const clean = str.replace(/[^\d.,]/g, '');
+      const points = (clean.match(/[.,]/g) || []).length;
+      if (points > 1) return false;
+      const normalized = clean.replace(',', '.');
+      const n = Number(normalized);
+      return isFinite(n) && n > 0;
     }
 
-    function setMontoValidity(valid) {
-      if (valid) {
-        groupMonto.classList.remove('invalid');
-        montoInput.setAttribute('aria-invalid', 'false');
-      } else {
-        groupMonto.classList.add('invalid');
-        montoInput.setAttribute('aria-invalid', 'true');
-      }
+    function setMontoValidity(isValid) {
+      groupMonto.classList.toggle('invalid', !isValid);
+      document.getElementById('montoError').style.display = isValid ? 'none' : 'block';
     }
 
-    function offline() { return !navigator.onLine; }
-
-    async function actualizarTasasUI(force=false) {
-      const cacheKey = 'tasas:usd_eur';
-      if (!force) {
-        const cached = store.get(cacheKey);
-        if (cached) { tasaUSD.textContent = cached.usd; tasaEUR.textContent = cached.eur; return; }
-      }
-      if (offline()) { tasaUSD.textContent = 'Sin conexión'; tasaEUR.textContent = 'Sin conexión'; return; }
-
+    async function actualizarTasasUI() {
       try {
-        const [resUSD, resEUR] = await Promise.all([
-          fetch('https://api.lupo.lat/cambio_a_bob?moneda=usd&monto=1'),
-          fetch('https://api.lupo.lat/cambio_a_bob?moneda=eur&monto=1')
-        ]);
-        const [dataUSD, dataEUR] = await Promise.all([resUSD.json(), resEUR.json()]);
-
-        const show = (d) => {
-          if (d && typeof d.resultado === 'number') return formatNumber(d.resultado);
-          if (d && d.resultado && !isNaN(d.resultado)) return formatNumber(Number(d.resultado));
-          return 'Error';
-        };
-
-        const usd = show(dataUSD); const eur = show(dataEUR);
-        tasaUSD.textContent = usd; tasaEUR.textContent = eur;
-        store.set(cacheKey, { usd, eur });
+        const res = await fetch('https://api.lupo.lat/tasas_referencia');
+        if (!res.ok) throw new Error('No se pudo obtener tasas');
+        const json = await res.json();
+        const usd = json?.tasas?.USD_BOB ?? json?.USD_BOB ?? null;
+        const eur = json?.tasas?.EUR_BOB ?? json?.EUR_BOB ?? null;
+        tasaUSD.textContent = usd ? formatNumber(usd) : '--';
+        tasaEUR.textContent = eur ? formatNumber(eur) : '--';
       } catch {
         tasaUSD.textContent = 'Error'; tasaEUR.textContent = 'Error';
       }
@@ -422,28 +313,18 @@
       setMontoValidity(isValid);
       if (!isValid) { clearResults(); actualizarTasasUI(); return; }
 
-      const monto = raw.replace(/,/g, '.').trim();
+      const clean = raw.replace(/[^\d.,]/g, '').replace(',', '.');
+      const monto = Number(clean);
+      const storeKey = `conv_${monto}`;
 
-      if (!force && memCache[monto] && (Date.now() - memCache[monto].t) < CACHE_EXP) {
-        showGlobalLoader(false);
-        const { fiat, crypto } = memCache[monto];
-        renderCurrencyList(fiatList, fiat, fiatCurrencies, false);
-        renderCurrencyList(cryptoList, crypto, cryptoCurrencies, true);
+      // cache localStorage (1 min)
+      const cached = store.get(storeKey);
+      if (!force && cached) {
+        renderCurrencyList(fiatList, cached.fiat, fiatCurrencies, false);
+        renderCurrencyList(cryptoList, cached.crypto, cryptoCurrencies, true);
         actualizarTasasUI();
+        memCache[monto] = { ...cached, t: Date.now() };
         return;
-      }
-
-      const storeKey = `conv:${monto}`;
-      if (!force) {
-        const cached = store.get(storeKey);
-        if (cached) {
-          showGlobalLoader(false);
-          renderCurrencyList(fiatList, cached.fiat, fiatCurrencies, false);
-          renderCurrencyList(cryptoList, cached.crypto, cryptoCurrencies, true);
-          actualizarTasasUI();
-          memCache[monto] = { ...cached, t: Date.now() };
-          return;
-        }
       }
 
       if (offline()) {
@@ -469,10 +350,68 @@
         const payload = { fiat, crypto };
         memCache[monto] = { ...payload, t: Date.now() };
         store.set(storeKey, payload);
-      } catch (error) {
+      } catch (e) {
         showGlobalLoader(false);
-        const msg = /network|fetch/i.test(error.message) ? 'Error de red. Verifique su conexión.' : 'Error al cargar datos. Intente nuevamente.';
-        fiatList.appendChild(createEl('div', { class: 'loading', text: msg }));
+        clearResults();
+        fiatList.appendChild(createEl('div', { class: 'loading', text: 'Error al calcular' }));
+        tasaUSD.textContent = 'Error';
+        tasaEUR.textContent = 'Error';
+      }
+    }
+
+    function offline() { return !navigator.onLine; }
+
+    function renderCurrencyList(listElement, data, dictionary, isCrypto = false) {
+      listElement.replaceChildren();
+
+      if (!data || Object.keys(data).length === 0) {
+        const empty = createEl('div', { class: 'loading' }, [
+          createEl('i', { class: 'fas fa-circle-info' }),
+          createEl('span', { text: 'Sin datos disponibles' })
+        ]);
+        listElement.appendChild(empty);
+        return;
+      }
+
+      if (Array.isArray(data)) {
+        data.forEach(item => {
+          const [name, code, value, iconUrl] = item;
+          const li = createEl('li', { class: 'currency-item', role: 'listitem' });
+          const icon = createEl('div', { class: 'currency-icon' }, [
+            Object.assign(new Image(), { src: iconUrl, alt: name })
+          ]);
+          const details = createEl('div', { class: 'currency-details' }, [
+            createEl('div', { class: 'currency-name', text: name }),
+            createEl('div', { class: 'currency-code', text: code })
+          ]);
+          const right = createEl('div', { class: 'currency-right' }, [
+            createEl('div', { class: 'currency-value', text: formatNumber(value) })
+          ]);
+          li.append(icon, details, right);
+          listElement.appendChild(li);
+        });
+        return;
+      }
+
+      for (const [name, value] of Object.entries(data)) {
+        const info = dictionary[name] || { code: name.slice(0, 3).toUpperCase(), icon: `https://via.placeholder.com/40/3b82f6/ffffff?text=${name.slice(0,2)}` };
+
+        const li = createEl('li', { class: 'currency-item', role: 'listitem' });
+        const icon = createEl('div', { class: 'currency-icon' }, [
+          Object.assign(new Image(), { src: info.icon, alt: name || info.code || '', referrerPolicy: 'no-referrer' })
+        ]);
+
+        const details = createEl('div', { class: 'currency-details' }, [
+          createEl('div', { class: 'currency-name', text: name }),
+          createEl('div', { class: 'currency-code', text: info.code })
+        ]);
+
+        const right = createEl('div', { class: 'currency-right' }, [
+          createEl('div', { class: 'currency-value', text: formatNumber(value) })
+        ]);
+
+        li.append(icon, details, right);
+        listElement.appendChild(li);
       }
     }
 
@@ -486,7 +425,9 @@
       clearTimeout(debounce);
       debounce = setTimeout(() => calcular(), 500);
     });
-
+    // Enter = calcular ahora
+    montoInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); calcular(true); }});
+    // Validación de caracteres
     montoInput.addEventListener('keypress', (e) => {
       const char = String.fromCharCode(e.which);
       if (!/[0-9.,]/.test(char)) e.preventDefault();
@@ -495,11 +436,10 @@
 
     montoInput.addEventListener('paste', (e) => {
       const value = (e.clipboardData || window.clipboardData).getData('text');
-      const cleaned = value.replace(/,/g, '.');
-      if (!/^\d+(\.\d{1,2})?$/.test(cleaned.trim())) e.preventDefault();
+      if (!/^[0-9]+([.,][0-9]{0,2})?$/.test(value.replace(/\s/g,''))) e.preventDefault();
     });
 
-    window.addEventListener('online', () => calcular(true));
+    window.addEventListener('online', () => { calcular(true); actualizarTasasUI(); });
     window.addEventListener('offline', () => {
       tasaUSD.textContent = 'Sin conexión';
       tasaEUR.textContent = 'Sin conexión';
@@ -513,5 +453,6 @@
       setInterval(() => actualizarTasasUI(), 60_000);
     });
   </script>
+</div>
 </body>
 </html>
