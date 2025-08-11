@@ -35,10 +35,9 @@
     --bg-soft:#0f172a;
     --fg: #e5e7eb;
     --muted:#93a2b8;
-    --brand:#60a5fa;
     --stroke:rgba(255,255,255,.08);
     --shadow: 0 10px 28px rgba(0,0,0,.35);
-    --logo: clamp(52px, 10vw, 96px); /* tamaño imponente */
+    --logo: clamp(52px, 10vw, 96px);
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
@@ -56,7 +55,7 @@
 
   .container{max-width:940px;margin:28px auto 96px;padding:0 16px}
 
-  /* Header */
+  /* Header (sin título duplicado) */
   .header{
     display:flex;align-items:center;gap:16px;
     background:linear-gradient(0deg, rgba(255,255,255,.02), rgba(255,255,255,.02)), var(--bg-soft);
@@ -67,8 +66,7 @@
     height:var(--logo); width:auto; display:block;
     border-radius:14px; filter:drop-shadow(0 8px 22px rgba(0,0,0,.35))
   }
-  .header .title{font-weight:800;letter-spacing:.2px;font-size:clamp(1.05rem,3vw,1.4rem)}
-  .header .subtitle{margin-left:auto;font-size:.92rem;color:var(--muted)}
+  .subtitle{margin-left:auto;font-size:.92rem;color:var(--muted)}
 
   /* Sticky input panel */
   .stick{position:sticky;top:0;z-index:10;padding-top:12px;margin-top:12px;background:linear-gradient(180deg, rgba(11,18,32,1) 0%, rgba(11,18,32,.85) 55%, rgba(11,18,32,0) 100%)}
@@ -133,8 +131,7 @@
 
   <header class="header" role="banner">
     <h1 class="visually-hidden">Calculadora al Paralelo — Convierte BOB a fiat y cripto</h1>
-    <img class="brand-logo" src="https://paralelo.scz.red/icons/banner.png" alt="Paralelo logo" width="96" height="96" decoding="async">
-    <div class="title">Paralelo Bs.</div>
+    <img class="brand-logo" src="https://paralelo.scz.red/icons/banner.png" alt="Paralelo" width="96" height="96" decoding="async">
     <div class="subtitle">Convierte Bs. a tipo de cambio paralelo</div>
   </header>
 
@@ -203,7 +200,7 @@
       "Peso mexicano": { code: "MXN", icon: "https://currencyfreaks.com/photos/flags/mxn.png" }
     };
 
-    // Diccionario de cripto (para mostrar iconos correctos)
+    // Iconos cripto por nombre y por código (para evitar desajustes)
     const cryptoDict = {
       "Tether (USDT)": { code: "USDT", icon: "https://paralelo.scz.red/paralelo/1.png" },
       "Bitcoin":       { code: "BTC",  icon: "https://paralelo.scz.red/paralelo/2.png" },
@@ -214,6 +211,9 @@
       "Pepe":          { code: "PEPE", icon: "https://paralelo.scz.red/paralelo/7.png" },
       "Trump":         { code: "TRUMP",icon: "https://paralelo.scz.red/paralelo/8.png" }
     };
+    const cryptoByCode = Object.fromEntries(
+      Object.values(cryptoDict).map(c => [c.code.toUpperCase(), c.icon])
+    );
 
     // ===== DOM =====
     const montoInput = document.getElementById('monto');
@@ -280,14 +280,28 @@
       tasaEUR.textContent = eur ? (monto / eur).toFixed(2) : '--';
     }
 
-    function renderList(listEl, data, dict){
+    // Resolver info (nombre->icono/código). Para cripto intenta por nombre, por (CODE) y por código directo.
+    function resolveInfo(dict, name, isCrypto=false){
+      if (dict[name]) return dict[name];
+      if (isCrypto) {
+        const m = name.match(/\(([^)]+)\)/); // Tether (USDT) -> USDT
+        const codeGuess = (m ? m[1] : name).toUpperCase().trim();
+        if (cryptoByCode[codeGuess]) return { code: codeGuess, icon: cryptoByCode[codeGuess] };
+        return { code: codeGuess, icon: `https://via.placeholder.com/34x34/0f172a/ffffff?text=${codeGuess.slice(0,2)}` };
+      }
+      // Fiat fallback
+      const code = name.slice(0,3).toUpperCase();
+      return { code, icon: `https://via.placeholder.com/34x34/0f172a/ffffff?text=${name.slice(0,2)}` };
+    }
+
+    function renderList(listEl, data, dict, isCrypto=false){
       listEl.replaceChildren();
       if (!data || Object.keys(data).length === 0) {
         listEl.appendChild(createEl('div',{class:'loading'},[ createEl('span',{class:'spinner'}) ]));
         return;
       }
       for (const [name,value] of Object.entries(data)){
-        const info = dict[name] || { code: name.slice(0,3).toUpperCase(), icon: `https://via.placeholder.com/34x34/0f172a/ffffff?text=${name.slice(0,2)}` };
+        const info = resolveInfo(dict, name, isCrypto);
         const li = createEl('li',{class:'item',role:'listitem'});
         const icon = createEl('div',{class:'icon'},[
           Object.assign(new Image(),{src:info.icon,alt:name,width:34,height:34,referrerPolicy:'no-referrer'})
@@ -314,8 +328,8 @@
       if(!force){
         const cached = store.get(key);
         if(cached){
-          renderList(fiatList, cached.fiat, fiatCurrencies);
-          renderList(cryptoList, cached.crypto, cryptoDict);
+          renderList(fiatList, cached.fiat, fiatCurrencies, false);
+          renderList(cryptoList, cached.crypto, cryptoDict, true);
           actualizarTasasUI(cached.fiat, monto);
           return;
         }
@@ -336,8 +350,8 @@
         const fiat = data.conversiones_fiat || {};
         const crypto = data.conversiones_cripto || {};
         showLoader(false);
-        renderList(fiatList, fiat, fiatCurrencies);
-        renderList(cryptoList, crypto, cryptoDict);
+        renderList(fiatList, fiat, fiatCurrencies, false);
+        renderList(cryptoList, crypto, cryptoDict, true);
         actualizarTasasUI(fiat, monto);
         store.set(key, {fiat, crypto});
       }catch(e){
@@ -357,7 +371,7 @@
     });
     montoInput.addEventListener('paste', (e)=>{
       const v=(e.clipboardData||window.clipboardData).getData('text');
-      if(!/^[0-9]+([.,][0-9]{0,2})?$/.test(v.replace(/\s/g,''))) e.preventPreventDefault?.() ?? e.preventDefault();
+      if(!/^[0-9]+([.,][0-9]{0,2})?$/.test(v.replace(/\s/g,''))) e.preventDefault();
     });
 
     addEventListener('online', ()=>{ calcular(true); });
@@ -365,7 +379,7 @@
 
     document.addEventListener('DOMContentLoaded', ()=>{
       // Preload crypto icons
-      Object.values(cryptoDict).forEach(c=>{ const i=new Image(); i.src=c.icon; });
+      Object.values(cryptoByCode).forEach(src=>{ const i=new Image(); i.src=src; });
       montoInput.focus(); calcular(true);
       setInterval(()=>calcular(true), 60_000);
     });
