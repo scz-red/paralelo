@@ -198,10 +198,11 @@
       fiatList.innerHTML = '';
       fiatNote.textContent = 'Sin descuentos aplicados (USD y EUR se muestran tal cual).';
       Object.entries(map).forEach(([name, val])=>{
-        // detectar código por nombre simple
         const code = guessCodeFromName(name);
         const text = typeof val === 'number' ? formatCurrency(val, code) : val;
-        const btn = `<button class="copy" data-copy="${typeof val==='number'? val: ''}">Copiar</button>`;
+        fiatList.insertAdjacentHTML('beforeend', `<div class="item" role="listitem"><span class="name">${name}</span><span class="val" title="Clic para copiar">${text}</span></div>`);
+      });
+    }">Copiar</button>`;
         fiatList.insertAdjacentHTML('beforeend', `<div class="item" role="listitem"><span class="name">${name}</span><span class="val">${text}</span>${btn}</div>`);
       });
     }
@@ -210,6 +211,9 @@
       cryptoList.innerHTML = '';
       Object.entries(map).forEach(([code, val])=>{
         const text = typeof val === 'number' ? new Intl.NumberFormat('es-BO', {maximumFractionDigits:6}).format(val) + ' ' + code : val;
+        cryptoList.insertAdjacentHTML('beforeend', `<div class="item" role="listitem"><span class="name">${code}</span><span class="val" title="Clic para copiar">${text}</span></div>`);
+      });
+    }).format(val) + ' ' + code : val;
         const btn = `<button class="copy" data-copy="${typeof val==='number'? val: ''}">Copiar</button>`;
         cryptoList.insertAdjacentHTML('beforeend', `<div class="item" role="listitem"><span class="name">${code}</span><span class="val">${text}</span>${btn}</div>`);
       });
@@ -232,14 +236,15 @@
 
     // Copiar al portapapeles
     document.addEventListener('click', (e)=>{
-      const el = e.target.closest('[data-copy]');
-      if(!el) return;
-      const raw = el.getAttribute('data-copy');
-      if(!raw) return;
-      navigator.clipboard.writeText(raw).then(()=>{
-        el.textContent = 'Copiado';
-        setTimeout(()=> el.textContent = 'Copiar', 900);
+      const valEl = e.target.closest('.val');
+      if(!valEl) return;
+      const text = valEl.textContent.trim();
+      navigator.clipboard.writeText(text).then(()=>{
+        const prev = valEl.textContent;
+        valEl.textContent = 'Copiado';
+        setTimeout(()=> valEl.textContent = prev, 650);
       });
+    });
     });
 
     // CTA WhatsApp (ajusta tu número)
